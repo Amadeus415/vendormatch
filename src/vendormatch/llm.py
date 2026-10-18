@@ -18,7 +18,10 @@ from dataclasses import asdict, dataclass
 
 DEFAULT_MODEL = "mlx-community/Qwen3-14B-4bit"
 
-SYSTEM = """You reconcile vendor records from different finance systems: the vendor master (ERP), \
+# v1 was the first draft. v2 came from reading v1's mistakes on dev pairs (it treated typos and
+# remit-to addresses as proof of different companies). Both are kept so the comparison can be rerun.
+PROMPTS = {
+    "v1": """You reconcile vendor records from different finance systems: the vendor master (ERP), \
 AP invoices, corporate card feeds, and procurement/CRM. Decide whether two records refer to the same \
 company: the same legal entity, or a brand, dba, abbreviation, or former name of it.
 
@@ -30,7 +33,26 @@ such as "SQ *", "TST*" or "PAYPAL *".
 Therapeutics"). Similar is not the same.
 - Numbered entities (Fund II vs Fund III, Acquisition Corp IV vs V) are different companies.
 
-Reply with JSON only: {"match": true or false, "reason": "<at most 15 words>"}"""
+Reply with JSON only: {"match": true or false, "reason": "<at most 15 words>"}""",
+    "v2": """You reconcile vendor records exported from different finance systems: the vendor master \
+(ERP), AP invoices, corporate card feeds, and procurement/CRM. Decide whether two records refer to the \
+same company: the same legal entity, or a brand, dba, abbreviation, acronym, or former name of it.
+
+These exports are messy. None of these means the companies differ:
+- typos and swapped letters; a name one or two letters off is usually the same company
+- a missing or different legal suffix (Inc, Corp, LLC, Co, Ltd) or abbreviations (Intl, Finl, Svcs, Mfg)
+- a name cut off at 22 to 32 characters, a card processor tag ("SQ *", "TST*", "PAYPAL *"), a store number
+- a different address: AP invoices often show a remit-to PO box in another city, and a card \
+transaction shows the city where the charge happened
+
+What does mean different companies: a different distinctive word in the name ("Summit Bank" vs \
+"Summit Therapeutics", "Northwind Bancorp" vs "Northwind Bancorp Texas"), or a different number \
+(Fund II vs Fund III).
+
+Reply with JSON only: {"match": true or false, "reason": "<at most 15 words>"}""",
+}
+DEFAULT_PROMPT = "v2"
+
 
 SOURCE_LABEL = {
     "erp": "vendor master",
@@ -71,6 +93,7 @@ class LLMJudge:
         reason: bool = True,
         max_reason_tokens: int = 40,
         thinking_budget: int = 0,
+        prompt: str = DEFAULT_PROMPT,
         seed: int = 0,
     ):
         import mlx.core as mx
@@ -85,6 +108,7 @@ class LLMJudge:
         self.reason = reason
         self.max_reason_tokens = max_reason_tokens
         self.thinking_budget = thinking_budget
+        self.system = PROMPTS[prompt]
         mx.random.seed(seed)
         enc = lambda s: self.tokenizer.encode(s, add_special_tokens=False)  # noqa: E731
         self.true_id, self.false_id = enc(" true")[0], enc(" false")[0]
@@ -127,7 +151,7 @@ class LLMJudge:
 
     # -- public ------------------------------------------------------------------------------------
     def prompt_ids(self, a: Mapping, b: Mapping) -> list[int]:
-        messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user_message(a, b)}]
+        messages = [{"role": "system", "content": self.system}, {"role": "user", "content": user_message(a, b)}]
         text = self.tokenizer.apply_chat_template(
             messages, add_generation_prompt=True, tokenize=False, enable_thinking=self.thinking_budget > 0
         )

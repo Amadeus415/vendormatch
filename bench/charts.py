@@ -271,27 +271,29 @@ NOISE_LABELS = {
 
 def recall_by_noise(c: dict) -> None:
     rb = c["recall_by_noise"]
+    has_cascade = "cascade" in rb[next(iter(rb))]
     tags = sorted(rb, key=lambda t: rb[t].get("cascade", rb[t]["gbm"]))
     fig, ax = figure("Former names and aliases are where every method loses recall",
-                     f"Share of true test pairs found, by what was done to either record. Dot = method, bar end = "
-                     f"blocking ceiling. {setup(c['meta'])}", size=(8, 6.2))  # fmt: skip
-    fig.subplots_adjust(left=0.33, top=0.86, bottom=0.09)
+                     "Share of true test pairs found, by what was done to either record (pair count in brackets). "
+                     f"Grey bar = what blocking lets through. {setup(c['meta'])}",
+                     size=(8, 6.4), left=0.36)  # fmt: skip
     y = np.arange(len(tags))
-    ax.barh(y, [rb[t]["blocking"] for t in tags], height=0.5, color="#EEF2F5")
-    series = [("rapidfuzz_token_set", OTHER, "token_set"), ("gbm", INK, "GBM"), ("cascade", ACCENT, "GBM + LLM")]
-    for key, color, _ in series:
-        if key in rb[tags[0]]:
-            ax.scatter([rb[t][key] for t in tags], y, color=color, s=28, zorder=3, edgecolor="white", linewidth=1)
-    top = tags[-1]
-    for key, _, label in series:
-        if key in rb[top]:
-            ax.annotate(label, (rb[top][key], y[-1]), xytext=(0, 9), textcoords="offset points", ha="center",
-                        fontsize=8.5, color=INK)  # fmt: skip
+    ax.barh(y, [rb[t]["blocking"] for t in tags], height=0.5, color="#EEF2F5", label="blocking ceiling")
+    series = [("rapidfuzz_token_set", OTHER, "rapidfuzz token_set"), ("gbm", INK, "gradient boosting")]
+    if has_cascade:
+        series.append(("cascade", ACCENT, "GBM + LLM cascade"))
+    for key, color, label in series:
+        ax.scatter([rb[t][key] for t in tags], y, color=color, s=30, zorder=3, edgecolor="white", linewidth=1,
+                   label=label)  # fmt: skip
+    leg = ax.legend(loc="lower left", bbox_to_anchor=(-0.01, 1.0), ncol=4, frameon=False, fontsize=9,
+                    handletextpad=0.3, columnspacing=1.2)  # fmt: skip
+    for t in leg.get_texts():
+        t.set_color(INK)
     ax.set_yticks(y, [f"{NOISE_LABELS.get(t, t)}  ({rb[t]['true_pairs']:,})" for t in tags])
     ax.grid(axis="y", visible=False)
     ax.set_xlim(0, 1.02)
     ax.xaxis.set_major_formatter(PercentFormatter(1.0))
-    ax.set_xlabel("Recall on true pairs touched by this corruption (pair count in brackets)")
+    ax.set_xlabel("Recall on true pairs touched by this corruption")
     save(fig, "recall_by_corruption")
 
 
@@ -326,24 +328,31 @@ def band_models(c: dict) -> None:
 def scaling(sc: dict) -> None:
     rows = sc["rows"]
     n = np.array([r["records"] for r in rows])
-    title = f"{rows[-1]['records'] // 1000}k records dedupe in {rows[-1]['total_seconds']:.0f} s on a laptop, no LLM"
-    sub = f"Wall time per stage vs number of records (log-log), k={sc['meta']['k']}. {setup(sc['meta'])}"
+    last = rows[-1]
+    title = f"{last['records'] // 1000}k records dedupe in {last['total_seconds']:.0f} s on a laptop, no LLM"
+    sub = (f"Wall time per stage vs records (log-log), median of {sc['meta'].get('repeats', 1)} runs, "
+           f"k={sc['meta']['k']}. Blocking is the only stage that grows faster than linearly. {setup(sc['meta'])}")
     fig, ax = figure(title, sub)
-    stages = [("features", ACCENT), ("block", INK), ("cluster", OTHER), ("normalize", LIGHT), ("score", LIGHT)]
-    for stage, color in stages:
-        t = np.array([r["seconds"][stage] for r in rows])
+    fig.subplots_adjust(right=0.80)
+    other = np.array([sum(v for k, v in r["seconds"].items() if k not in ("block", "features")) for r in rows])
+    lines = [("block", INK, np.array([r["seconds"]["block"] for r in rows])),
+             ("features", ACCENT, np.array([r["seconds"]["features"] for r in rows])),
+             ("normalize, score, cluster", LIGHT, other)]  # fmt: skip
+    for label, color, t in lines:
         ax.plot(n, t, color=color, lw=1.8, marker="o", ms=3.5, mec="white", mew=0.8)
-        ax.text(n[-1] * 1.08, t[-1], stage, fontsize=9, color=INK, va="center")
+        ax.text(n[-1] * 1.12, t[-1], label, fontsize=9, color=INK, va="center")
     total = np.array([r["total_seconds"] for r in rows])
     ax.plot(n, total, color=INK, lw=1, ls=(0, (1, 2)))
-    ax.text(n[-1] * 1.08, total[-1], f"total ({rows[-1]['records_per_second']:,.0f} rec/s)", fontsize=9,
-            color=INK, va="center")  # fmt: skip
+    ax.text(n[-1] * 1.12, total[-1] * 1.15, f"total, {last['records_per_second']:,.0f} records/s", fontsize=9,
+            color=INK, va="bottom")  # fmt: skip
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlim(n[0] * 0.8, n[-1] * 3)
+    ax.set_xlim(n[0] * 0.8, n[-1] * 1.05)
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v / 1000:.0f}k"))
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g} s"))
     ax.set_xlabel("Records")
     ax.set_ylabel("Seconds")
+    ax.set_clip_on(False)
     save(fig, "scaling")
 
 
@@ -361,10 +370,13 @@ def clusters(c: dict) -> None:
     al = [cl[k]["average_link"]["pairwise_f1"] for k in order]
     for yi, a, b in zip(y, uf, al, strict=True):
         ax.plot([a, b], [yi, yi], color=GRID, lw=3, zorder=1)
-    ax.scatter(uf, y, color=OTHER, s=40, zorder=3, edgecolor="white", linewidth=1.5)
-    ax.scatter(al, y, color=ACCENT, s=40, zorder=3, edgecolor="white", linewidth=1.5)
-    ax.annotate("union-find", (uf[0], y[0]), xytext=(0, 9), textcoords="offset points", ha="center", fontsize=8.5)
-    ax.annotate("average link", (al[0], y[0]), xytext=(0, 9), textcoords="offset points", ha="center", fontsize=8.5)
+    ax.scatter(uf, y, color=OTHER, s=40, zorder=3, edgecolor="white", linewidth=1.5,
+               label="union-find (any edge merges)")  # fmt: skip
+    ax.scatter(al, y, color=ACCENT, s=40, zorder=3, edgecolor="white", linewidth=1.5,
+               label="average linkage (shipped)")  # fmt: skip
+    leg = ax.legend(loc="upper left", frameon=False, fontsize=9)
+    for t in leg.get_texts():
+        t.set_color(INK)
     for yi, a, b in zip(y, uf, al, strict=True):
         ax.text(max(a, b) + 0.01, yi, f"{b:.3f}", va="center", fontsize=9, color=INK)
     ax.set_yticks(y, [LABELS[k] for k in order])
@@ -384,7 +396,7 @@ def main() -> None:
     if cpath.exists():
         c = load_json(cpath)
         methods_bar(s, c)
-        if c["budget_curve"]:
+        if c.get("cascade_band"):
             hero(c, s)
         recall_by_noise(c)
         band_models(c)

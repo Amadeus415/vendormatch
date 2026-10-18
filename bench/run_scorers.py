@@ -1,8 +1,8 @@
 """Stage 3 benchmark: cheap scorers on the blocked candidate pairs, and the shipped model.
 
 Every threshold is chosen on dev. The learned models pick their threshold from 5-fold out-of-fold
-predictions on dev, so the threshold is not fit to the same rows the model memorized. Then each method
-is applied once to test.
+predictions on dev (folds split by company), so the threshold is not fit to rows the model memorized.
+Then each method is applied once to test.
 
     uv run python -m bench.run_scorers
 """
@@ -14,7 +14,7 @@ import math
 import time
 
 import numpy as np
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedGroupKFold
 
 from vendormatch.blocking import candidates
 from vendormatch.features import FEATURES, pair_features, prepare
@@ -62,9 +62,10 @@ def build(name: str, k: int) -> dict:
             "seconds": {"normalize": t_prep, "block": t_block, "features": t_feat}}  # fmt: skip
 
 
-def oof_scores(kind: str, X: np.ndarray, y: np.ndarray, seed: int = 0) -> np.ndarray:
+def oof_scores(kind: str, X: np.ndarray, y: np.ndarray, groups: list[str], seed: int = 0) -> np.ndarray:
+    """5-fold out-of-fold scores, folds split by company so no company is on both sides of a fold."""
     out = np.zeros(len(y))
-    for tr, va in StratifiedKFold(5, shuffle=True, random_state=seed).split(X, y):
+    for tr, va in StratifiedGroupKFold(5, shuffle=True, random_state=seed).split(X, y, groups):
         out[va] = PairScorer(kind).fit(X[tr], y[tr], seed=seed).predict(X[va])
     return out
 
@@ -117,7 +118,8 @@ def main() -> None:
     learned = {}
     for kind in ("logreg", "gbm"):
         t0 = time.perf_counter()
-        oof = oof_scores(kind, dev["X"], dev["y"])
+        groups = [dev["records"][a]["entity_id"] for a, _ in dev["pairs"]]  # company of the first record
+        oof = oof_scores(kind, dev["X"], dev["y"], groups)
         thr, _ = best_threshold(oof, dev["y"], len(dev["truth"]))
         model = PairScorer(kind, threshold=thr, band=band_around(thr)).fit(dev["X"], dev["y"])
         t_train = time.perf_counter() - t0
@@ -127,12 +129,19 @@ def main() -> None:
         methods[kind] = evaluate(kind, oof, s_test, dev, test, threshold=thr)
         methods[kind]["train_seconds"] = t_train
         methods[kind]["predict_pairs_per_second"] = len(s_test) / t_pred
-        learned[kind] = (model, s_test)
+        learned[kind] = (model, s_test, oof)
 
-    gbm, s_gbm = learned["gbm"]
+    gbm, s_gbm, oof_gbm = learned["gbm"]
     gbm.meta = {"trained_on": "data/dev.csv", "k": k, "dev_pairs": len(dev["y"]), **metadata()}
     gbm.save(MODEL_PATH)
     importances = permutation_importance(gbm, test)
+
+    # Out-of-fold GBM scores on dev: the LLM prompt was developed on dev pairs in the same band.
+    with (RESULTS / "dev_pairs.csv").open("w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["a", "b", "label", "gbm"])
+        for (a, b), y, sg in zip(dev["pairs"], dev["y"], oof_gbm, strict=True):
+            w.writerow([a, b, int(y), f"{sg:.6f}"])
 
     # Per-pair scores on test, used by the LLM and cascade stages.
     with (RESULTS / "test_pairs.csv").open("w", newline="") as f:

@@ -23,6 +23,7 @@ from vendormatch.scorer import PairScorer
 from .common import RESULTS, load_json, load_split, metadata, save_json
 
 SIZES = [1_000, 2_000, 5_000, 10_000, 20_000, 50_000]
+REPEATS = 3  # other jobs share this machine; report the median run per size
 
 
 def subset(records: list[dict], n: int) -> list[dict]:
@@ -80,12 +81,15 @@ def main() -> None:
     run(subset(records, 500), scorer, k)  # warm up imports and caches
     rows = []
     for n in SIZES:
-        r = run(subset(records, n), scorer, k)
+        part = subset(records, n)
+        runs = sorted((run(part, scorer, k) for _ in range(REPEATS)), key=lambda r: r["total_seconds"])
+        r = runs[len(runs) // 2]
+        r["all_total_seconds"] = [x["total_seconds"] for x in runs]
         rows.append(r)
         stages = ", ".join(f"{s} {v:.1f}s" for s, v in r["seconds"].items())
         print(f"{n:6d} records: {r['total_seconds']:6.1f}s ({r['records_per_second']:,.0f} rec/s) {stages}; "
               f"pair F1 {r['pair_f1']:.3f}")  # fmt: skip
-    save_json(RESULTS / "scaling.json", {"meta": metadata(k=k), "rows": rows})
+    save_json(RESULTS / "scaling.json", {"meta": metadata(k=k, repeats=REPEATS), "rows": rows})
 
 
 if __name__ == "__main__":

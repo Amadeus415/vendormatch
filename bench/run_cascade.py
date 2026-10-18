@@ -198,35 +198,52 @@ def band_comparison(d, band_llm: dict) -> dict:
     return {"pairs": len(idx), "positives": int(y.sum()), "gbm": stats(gbm), "llm": stats(llm)}
 
 
-def examples(d, band_llm: dict, k: int = 12) -> dict:
+def examples(d, scores: dict[str, np.ndarray], band_llm: dict, k: int = 12) -> dict:
+    """Real test pairs each method gets wrong, sampled with a fixed seed."""
     recs = d["records"]
+    rng = np.random.default_rng(0)
 
     def show(i):
         a, b = d["pairs"][i]
-        r = band_llm[d["pairs"][i]]
+        r = band_llm.get(d["pairs"][i], {})
         return {"a": {f: recs[a][f] for f in ("source", "name", "city", "state")},
                 "b": {f: recs[b][f] for f in ("source", "name", "city", "state")},
                 "same_company": bool(d["y"][i]), "gbm": round(float(d["gbm"][i]), 3),
-                "llm_p": round(r["p_match"], 3), "reason": r.get("reason", ""),
+                "jaro_winkler": round(float(d["feat"]["jaro_winkler"][i]), 3),
+                "llm_p": round(r["p_match"], 3) if r else None, "reason": r.get("reason", ""),
                 "noise": sorted(set(recs[a]["noise"].split(";") + recs[b]["noise"].split(";")) - {""})}  # fmt: skip
 
+    def pick(idx):
+        idx = list(idx)
+        return [show(i) for i in sorted(rng.choice(idx, min(k, len(idx)), replace=False))] if idx else []
+
+    y = d["y"] == 1
+    jw = scores["jaro_winkler"] >= 0.5
+    gbm = d["gbm"] >= d["thr"]
+    lo, hi = d["band"]
+    in_band = (d["gbm"] >= lo) & (d["gbm"] <= hi)
+    out = {
+        "jaro_winkler_false_match_gbm_right": pick(np.nonzero(jw & ~y & ~gbm)[0]),
+        "jaro_winkler_missed_gbm_right": pick(np.nonzero(~jw & y & gbm)[0]),
+        "gbm_confident_false_match": pick(np.nonzero(gbm & ~y & ~in_band)[0]),
+        "gbm_confident_miss": pick(np.nonzero(~gbm & y & ~in_band)[0]),
+    }
     fixed, broken, both_wrong = [], [], []
     for p, r in band_llm.items():
         i = d["index"].get(p)
         if i is None:
             continue
-        truth = bool(d["y"][i])
-        g, m = bool(d["gbm"][i] >= d["thr"]), bool(r["match"])
+        truth, g, m = bool(d["y"][i]), bool(gbm[i]), bool(r["match"])
         if g != truth and m == truth:
             fixed.append(i)
         elif g == truth and m != truth:
             broken.append(i)
         elif g != truth and m != truth:
             both_wrong.append(i)
-    rng = np.random.default_rng(0)
-    pick = lambda xs: [show(i) for i in sorted(rng.choice(xs, min(k, len(xs)), replace=False))] if xs else []  # noqa: E731
-    return {"counts": {"llm_fixed": len(fixed), "llm_broke": len(broken), "both_wrong": len(both_wrong)},
-            "llm_fixed": pick(fixed), "llm_broke": pick(broken), "both_wrong": pick(both_wrong)}  # fmt: skip
+    out.update(counts={"llm_fixed": len(fixed), "llm_broke": len(broken), "both_wrong": len(both_wrong),
+                       "gbm_confident_errors": int(((gbm != y) & ~in_band).sum())},
+               llm_fixed=pick(fixed), llm_broke=pick(broken), both_wrong=pick(both_wrong))  # fmt: skip
+    return out
 
 
 def llm_cost(tag: str) -> dict | None:
@@ -300,7 +317,7 @@ def main() -> None:
         "clusters": clustering(d, scores),
         "recall_by_noise": recall_by_noise(d, scores),
         "hard_negatives": hard_negatives(d, scores),
-        "examples": examples(d, band) if band else {},
+        "examples": examples(d, scores, band),
         "llm_runs": {t: llm_cost(t) for t in sorted({f.stem for f in LLM_DIR.glob("*.jsonl")})},
         "model_sizes": sizes,
         "thinking": think,

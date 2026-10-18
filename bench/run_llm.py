@@ -17,7 +17,7 @@ import math
 import random
 import time
 
-from vendormatch.llm import DEFAULT_MODEL, LLMJudge
+from vendormatch.llm import DEFAULT_MODEL, DEFAULT_PROMPT, PROMPTS, LLMJudge
 
 from .common import RESULTS, load_json, load_split, metadata, save_json
 
@@ -31,10 +31,11 @@ def uncertainty(p: float, threshold: float) -> float:
     return abs(logit(p) - logit(threshold))
 
 
-def load_pairs(which: str) -> list[dict]:
-    """'all': every test candidate, most uncertain first, so a partial run already covers the cascade.
-    'band': only pairs in the model's uncertain band, in a fixed random order."""
-    rows = list(csv.DictReader((RESULTS / "test_pairs.csv").open()))
+def load_pairs(which: str, split: str = "test") -> list[dict]:
+    """'all': every candidate, most uncertain first, so a partial run already covers the cascade.
+    'band': only pairs in the model's uncertain band, in a fixed random order.
+    On dev the GBM scores are out-of-fold, so the dev band looks like the test band."""
+    rows = list(csv.DictReader((RESULTS / f"{split}_pairs.csv").open()))
     meta = load_json(RESULTS / "scorers.json")
     lo, hi = meta["meta"]["band"]
     thr = meta["methods"]["gbm"]["threshold"]
@@ -52,21 +53,23 @@ def main() -> None:
     ap.add_argument("--tag", required=True)
     ap.add_argument("--model", default=DEFAULT_MODEL, help="HF repo id or local path")
     ap.add_argument("--model-id", default=None, help="name to record when --model is a local path")
+    ap.add_argument("--split", choices=["test", "dev"], default="test", help="dev is for prompt development")
     ap.add_argument("--pairs", choices=["all", "band", "tail"], default="band")
     ap.add_argument("--head", type=int, default=0, help="with --pairs tail: skip the N most uncertain pairs")
     ap.add_argument("--sample", type=int, default=0, help="only the first N pairs of the fixed order")
     ap.add_argument("--limit", type=int, default=0, help="judge at most N new pairs this call")
     ap.add_argument("--no-reason", action="store_true")
     ap.add_argument("--think", type=int, default=0, help="thinking budget in tokens (0 = thinking off)")
+    ap.add_argument("--prompt", choices=sorted(PROMPTS), default=DEFAULT_PROMPT)
     ap.add_argument("--reuse", default=None, help="tag of an earlier run with the same model; skip its pairs")
     args = ap.parse_args()
 
-    records = load_split("test")
+    records = load_split(args.split)
     if args.pairs == "tail":  # a uniform random sample of the pairs after the exhaustive head
-        pairs = load_pairs("all")[args.head :]
+        pairs = load_pairs("all", args.split)[args.head :]
         random.Random(1).shuffle(pairs)
     else:
-        pairs = load_pairs(args.pairs)
+        pairs = load_pairs(args.pairs, args.split)
     if args.sample:
         pairs = pairs[: args.sample]
     out_path = LLM_DIR / f"{args.tag}.jsonl"
@@ -84,7 +87,7 @@ def main() -> None:
         return
 
     t_load = time.perf_counter()
-    judge = LLMJudge(args.model, reason=not args.no_reason, thinking_budget=args.think)
+    judge = LLMJudge(args.model, reason=not args.no_reason, thinking_budget=args.think, prompt=args.prompt)
     judge.warm()
     t_load = time.perf_counter() - t_load
     t0 = time.perf_counter()
@@ -100,8 +103,9 @@ def main() -> None:
     runs = load_json(meta_path)["runs"] if meta_path.exists() else []
     runs.append({"pairs": len(todo), "seconds": elapsed, "load_seconds": t_load, "started_after": len(done),
                  **metadata()})  # fmt: skip
-    save_json(meta_path, {"model": args.model_id or args.model, "pairs": args.pairs, "sample": args.sample,
-                          "reason": not args.no_reason, "thinking_budget": args.think,
+    save_json(meta_path, {"model": args.model_id or args.model, "split": args.split, "pairs": args.pairs,
+                          "sample": args.sample,
+                          "reason": not args.no_reason, "thinking_budget": args.think, "prompt": args.prompt,
                           "total_pairs": len(pairs), "runs": runs})  # fmt: skip
     print(f"done: {len(todo)} pairs in {elapsed:.0f}s ({len(todo) / elapsed:.2f} pairs/s)")
 
