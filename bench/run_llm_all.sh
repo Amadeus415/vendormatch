@@ -11,7 +11,11 @@ HEAD=${HEAD_PAIRS:-3000}      # most-uncertain test pairs judged exhaustively
 TAIL=${TAIL_SAMPLE:-800}      # uniform sample of the rest, for the "LLM on everything" estimate
 run() { $LOCK uv run python -m bench.run_llm "$@"; }
 until_done() {  # repeat a resumable run in chunks until it reports nothing left to do
-  while run "$@" --limit "${CHUNK:-600}" | tee /dev/stderr | grep -q "judging [1-9]"; do :; done
+  local out
+  while true; do
+    out=$(run "$@" --limit "${CHUNK:-600}" 2>&1 | tee /dev/stderr)
+    grep -q "judging [1-9]" <<<"$out" || break
+  done
 }
 
 # 0. Prompt development, on dev pairs only: the first draft (v1) against the revision (v2). Run once;

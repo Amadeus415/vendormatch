@@ -90,44 +90,42 @@ def hero(c: dict, s: dict) -> None:
     x = np.array([r["fraction"] for r in curve])
     y = np.array([r["f1"] for r in curve])
     base = c["gbm_only"]["f1"]
-    best_baseline = max(
-        (m for k, m in s["methods"].items() if k not in ("gbm", "logreg")), key=lambda m: m["f1"]
-    )
+    jw = s["methods"]["jaro_winkler"]["f1"]
     band_frac = c["band_pairs"] / c["candidates"]
-    casc = c["cascade_band"]["f1"] if c.get("cascade_band") else None
+    casc = c["cascade_band"]["f1"]
     everything = c.get("llm_everything")
-    gain = (casc - base) if casc else 0
-    title = f"Sending {band_frac:.1%} of pairs to the LLM lifts F1 from {base:.3f} to {casc:.3f}"
-    sub = (f"Test split, {c['candidates']:,} candidate pairs. Qwen3-14B-4bit judges the pairs the GBM is least "
-           f"sure about. {setup(c['meta'])}")  # fmt: skip
-    fig, ax = figure(title, sub)
-    xs = np.maximum(x, 1e-4)
-    ax.plot(xs, y, color=ACCENT, lw=2, marker="o", ms=4, mec="white", mew=1, zorder=3)
-    ax.axhline(base, color=LIGHT, lw=1)
-    ax.text(1.05e-4, base - 0.004, f"GBM alone {base:.3f}", color=MUTED, fontsize=9, va="top")
-    ax.axhline(best_baseline["f1"], color=OTHER, lw=1)
-    ax.text(1.05e-4, best_baseline["f1"] + 0.003, f"Best string similarity ({LABELS[best_baseline['method']]}) "
-            f"{best_baseline['f1']:.3f}", color=MUTED, fontsize=9, va="bottom")  # fmt: skip
-    if casc:
-        ax.scatter([band_frac], [casc], s=70, color=ACCENT, edgecolor="white", linewidth=2, zorder=4)
-        ax.annotate(f"shipped band (GBM score 0.05-0.95)\n{band_frac:.1%} of pairs, F1 {casc:.3f} (+{gain:.3f})",
-                    (band_frac, casc), xytext=(14, -38), textcoords="offset points", fontsize=9, color=INK,
-                    arrowprops={"arrowstyle": "-", "color": MUTED, "lw": 0.8})  # fmt: skip
+    title = f"The LLM judges {band_frac:.1%} of pairs and lifts F1 from {base:.3f} to {casc:.3f}"
+    sub = (f"Pair F1 on the test split ({c['candidates']:,} candidate pairs) as Qwen3-14B-4bit takes over the "
+           f"pairs the gradient-boosted model is least sure about, most uncertain first. {setup(c['meta'])}")
+    fig, ax = figure(title, sub, size=(8, 4.8))
+    fig.subplots_adjust(right=0.94)
+    xs = np.maximum(x, 1e-4)  # the 0% point sits at the left edge of the log axis
+    ax.plot(xs, y, color=ACCENT, lw=2, zorder=3)
+    ax.scatter(xs[1:], y[1:], color=ACCENT, s=16, zorder=3, edgecolor="white", linewidth=0.8)
+    ax.scatter([1e-4], [base], color=INK, s=40, zorder=4, edgecolor="white", linewidth=1.5)
+    ax.annotate(f"model alone\n{base:.3f}", (1e-4, base), xytext=(8, -26), textcoords="offset points",
+                fontsize=9, color=INK)  # fmt: skip
+    ax.axhline(jw, color=OTHER, lw=1)
+    ax.text(1.1e-4, jw + 0.0015, f"best single string similarity (Jaro-Winkler) {jw:.3f}", color=MUTED,
+            fontsize=8.5, va="bottom")  # fmt: skip
+    ax.scatter([band_frac], [casc], s=90, color=ACCENT, edgecolor="white", linewidth=2, zorder=5)
+    ax.annotate(f"shipped cascade: {band_frac:.1%} of pairs\nF1 {casc:.3f}", (band_frac, casc), xytext=(-150, 12),
+                textcoords="offset points", fontsize=9, color=INK,
+                arrowprops={"arrowstyle": "-", "color": MUTED, "lw": 0.8})  # fmt: skip
     if everything:
         lo_ci, hi_ci = everything["f1_ci95"]
+        ax.plot([x[-1], 1.0], [y[-1], everything["f1"]], color=ACCENT, lw=1, ls=(0, (2, 3)), zorder=2)
         ax.errorbar([1.0], [everything["f1"]], yerr=[[everything["f1"] - lo_ci], [hi_ci - everything["f1"]]],
                     fmt="o", color=INK, ms=6, mec="white", capsize=3, lw=1, zorder=4)  # fmt: skip
-        ax.annotate(f"LLM on every pair\n(estimated) {everything['f1']:.3f}", (1.0, everything["f1"]),
-                    xytext=(-12, 16), textcoords="offset points", ha="right", fontsize=9, color=INK)  # fmt: skip
+        ax.annotate(f"LLM on every pair\n{everything['f1']:.3f} (estimated)", (1.0, everything["f1"]),
+                    xytext=(-10, -34), textcoords="offset points", ha="right", fontsize=9, color=INK)  # fmt: skip
     ax.set_xscale("log")
-    ax.set_xlim(1e-4 * 0.8, 1.4)
-    ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: "0%" if v <= 1.01e-4 else f"{v:.0%}" if v >= 0.01
-                                               else f"{v:.1%}"))  # fmt: skip
-    ax.set_xticks([1e-4, 0.001, 0.01, 0.1, 1.0])
-    ax.set_xlabel("Share of candidate pairs sent to the LLM (log scale; most uncertain first)")
+    ax.set_xlim(0.75e-4, 1.5)
+    ax.set_xticks([1e-4, 1e-3, 1e-2, 1e-1, 1.0], ["0%", "0.1%", "1%", "10%", "100%"])
+    ax.set_xlabel("Share of candidate pairs sent to the LLM (log scale)")
     ax.set_ylabel("Pair F1 on test")
-    lo = min(best_baseline["f1"], base) - 0.03
-    ax.set_ylim(lo, max(y.max(), casc or 0, everything["f1"] if everything else 0) + 0.02)
+    top = max(y.max(), casc, everything["f1"] if everything else 0)
+    ax.set_ylim(min(jw, base) - 0.012, top + 0.012)
     save(fig, "hero_cascade_budget")
 
 
@@ -304,20 +302,28 @@ def band_models(c: dict) -> None:
     sizes = {k: v for k, v in c.get("model_sizes", {}).items() if v.get("band") and v.get("cost")}
     if not sizes:
         return
-    fig, ax = figure("Inside the uncertain band, bigger judges are slower and more accurate",
-                     f"F1 on the {c['band_pairs']:,} test pairs with GBM score 0.05-0.95, thinking off, one pair at a "
-                     f"time with a reason. {setup(c['meta'])}")  # fmt: skip
-    gbm_f1 = next(iter(sizes.values()))["band"]["gbm"]["f1"]
+    any_band = next(iter(sizes.values()))["band"]
+    gbm_f1 = any_band["gbm"]["f1"]
+    fig, ax = figure("On the uncertain pairs, only the 14B judge beats the model it is backing up",
+                     f"F1 on the {any_band['pairs']:,} test pairs in the uncertain band; thinking off, decision token "
+                     f"only, one pair at a time. {setup(c['meta'])}")  # fmt: skip
     ax.axhline(gbm_f1, color=OTHER, lw=1)
-    ax.text(0.02, gbm_f1 + 0.005, f"GBM alone on these pairs: F1 {gbm_f1:.3f}", color=MUTED, fontsize=9,
+    ax.text(0.02, gbm_f1 + 0.006, f"gradient-boosted model on the same pairs: {gbm_f1:.3f}", color=MUTED, fontsize=9,
             transform=ax.get_yaxis_transform())  # fmt: skip
-    for tag, v in sorted(sizes.items(), key=lambda kv: kv[1]["cost"]["mean_seconds_per_pair"]):
-        x, y = v["cost"]["mean_seconds_per_pair"], v["band"]["llm"]["f1"]
-        ax.scatter([x], [y], s=60, color=ACCENT if "14b" in tag else INK, edgecolor="white", linewidth=2, zorder=3)
-        ax.annotate(f"{tag.split('_')[0]}  F1 {y:.3f}", (x, y), xytext=(8, -3), textcoords="offset points",
-                    fontsize=9, color=INK)  # fmt: skip
+    pts = sorted(((v["cost"]["mean_seconds_per_pair"], v["band"]["llm"]["f1"], k) for k, v in sizes.items()))
+    ax.plot([p[0] for p in pts], [p[1] for p in pts], color=GRID, lw=1.2, zorder=1)
+    for x, y, tag in pts:
+        name = tag.split("_")[0].replace("qwen3-", "Qwen3-").replace("b", "B")
+        ax.scatter([x], [y], s=70, color=ACCENT if "14b" in tag else INK, edgecolor="white", linewidth=2, zorder=3)
+        ax.annotate(f"{name}\nF1 {y:.3f}, {x:.2f} s/pair", (x, y), xytext=(8, -4), textcoords="offset points",
+                    fontsize=9, color=INK, va="top")  # fmt: skip
     ax.set_xscale("log")
-    ax.set_xlabel("Seconds per pair (log scale)")
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g} s"))
+    xs = [p[0] for p in pts]
+    ax.set_xlim(min(xs) / 1.6, max(xs) * 2.5)
+    ys = [p[1] for p in pts] + [gbm_f1]
+    ax.set_ylim(min(ys) - 0.05, max(ys) + 0.05)
+    ax.set_xlabel("Seconds per pair on the M4 Pro (log scale)")
     ax.set_ylabel("F1 on band pairs")
     save(fig, "llm_model_size")
 

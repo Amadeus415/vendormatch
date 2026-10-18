@@ -67,24 +67,20 @@ def decisions_scores(d, chosen: np.ndarray) -> dict:
     return pair_scores(pred, d["truth"])
 
 
-def budget_curve(d, llm: dict, order: np.ndarray, covered: int) -> list[dict]:
-    """Cascade F1 when the first n pairs (in uncertainty order) are decided by the LLM."""
+def budget_curve(d, llm: dict, order: np.ndarray, covered: int, extra: tuple[int, ...] = ()) -> list[dict]:
+    """Cascade F1 when the first n pairs (in uncertainty order) are decided by the LLM, for every
+    budget in BUDGETS (and any extra pair counts) that the LLM run covers."""
     base = d["gbm"] >= d["thr"]
     llm_match = np.array([llm[p]["match"] if p in llm else False for p in d["pairs"]])
-    out = []
     N = len(d["pairs"])
-    for f in BUDGETS:
-        n = int(round(f * N))
+    counts = sorted({int(round(f * N)) for f in BUDGETS} | set(extra) | ({covered} if 0 < covered < N else set()))
+    out = []
+    for n in counts:
         if n > covered:
             break
         chosen = base.copy()
-        idx = order[:n]
-        chosen[idx] = llm_match[idx]
+        chosen[order[:n]] = llm_match[order[:n]]
         out.append({"fraction": n / N, "llm_pairs": n, **decisions_scores(d, chosen)})
-    if covered and (not out or out[-1]["llm_pairs"] < covered) and covered < N:
-        chosen = base.copy()
-        chosen[order[:covered]] = llm_match[order[:covered]]
-        out.append({"fraction": covered / N, "llm_pairs": covered, **decisions_scores(d, chosen)})
     return out
 
 
@@ -198,14 +194,15 @@ def band_comparison(d, band_llm: dict) -> dict:
     return {"pairs": len(idx), "positives": int(y.sum()), "gbm": stats(gbm), "llm": stats(llm)}
 
 
-def examples(d, scores: dict[str, np.ndarray], band_llm: dict, k: int = 12) -> dict:
-    """Real test pairs each method gets wrong, sampled with a fixed seed."""
+def examples(d, scores: dict[str, np.ndarray], band_llm: dict, reasons: dict, k: int = 12) -> dict:
+    """Real test pairs each method gets wrong, sampled with a fixed seed. LLM examples come from the
+    150 band pairs that were also judged with a written reason."""
     recs = d["records"]
     rng = np.random.default_rng(0)
 
     def show(i):
         a, b = d["pairs"][i]
-        r = band_llm.get(d["pairs"][i], {})
+        r = reasons.get(d["pairs"][i]) or band_llm.get(d["pairs"][i], {})
         return {"a": {f: recs[a][f] for f in ("source", "name", "city", "state")},
                 "b": {f: recs[b][f] for f in ("source", "name", "city", "state")},
                 "same_company": bool(d["y"][i]), "gbm": round(float(d["gbm"][i]), 3),
@@ -229,7 +226,7 @@ def examples(d, scores: dict[str, np.ndarray], band_llm: dict, k: int = 12) -> d
         "gbm_confident_miss": pick(np.nonzero(~gbm & y & ~in_band)[0]),
     }
     fixed, broken, both_wrong = [], [], []
-    for p, r in band_llm.items():
+    for p, r in reasons.items():
         i = d["index"].get(p)
         if i is None:
             continue
@@ -240,10 +237,35 @@ def examples(d, scores: dict[str, np.ndarray], band_llm: dict, k: int = 12) -> d
             broken.append(i)
         elif g != truth and m != truth:
             both_wrong.append(i)
-    out.update(counts={"llm_fixed": len(fixed), "llm_broke": len(broken), "both_wrong": len(both_wrong),
+    band_idx = [d["index"][p] for p in band_llm if p in d["index"]]
+    llm_right = np.array([band_llm[d["pairs"][i]]["match"] == y[i] for i in band_idx], dtype=bool)
+    gbm_right = np.array([gbm[i] == y[i] for i in band_idx], dtype=bool)
+    out.update(counts={"band_llm_fixed": int((llm_right & ~gbm_right).sum()),
+                       "band_llm_broke": int((~llm_right & gbm_right).sum()),
+                       "band_both_wrong": int((~llm_right & ~gbm_right).sum()),
                        "gbm_confident_errors": int(((gbm != y) & ~in_band).sum())},
                llm_fixed=pick(fixed), llm_broke=pick(broken), both_wrong=pick(both_wrong))  # fmt: skip
     return out
+
+
+def prompt_dev() -> dict:
+    """Prompt v1 vs v2 on the same dev pairs, next to the GBM's out-of-fold scores on those pairs."""
+    runs = {t: read_jsonl(LLM_DIR / f"dev-prompt-{t}.jsonl") for t in ("v1", "v2")}
+    if not all(runs.values()):
+        return {}
+    oof = {(int(r["a"]), int(r["b"])): float(r["gbm"]) for r in csv.DictReader((RESULTS / "dev_pairs.csv").open())}
+    thr = load_json(RESULTS / "scorers.json")["methods"]["gbm"]["threshold"]
+    common = sorted(set(runs["v1"]) & set(runs["v2"]) & set(oof))
+    y = np.array([runs["v1"][p]["label"] for p in common]) == 1
+
+    def stats(pred):
+        pred = np.asarray(pred, dtype=bool)
+        tp, fp, fn = int((pred & y).sum()), int((pred & ~y).sum()), int((~pred & y).sum())
+        return {**prf(tp, fp, fn), "accuracy": float((pred == y).mean())}
+
+    return {"pairs": len(common), "positives": int(y.sum()),
+            "gbm_out_of_fold": stats([oof[p] >= thr for p in common]),
+            **{f"llm_{t}": stats([runs[t][p]["match"] for p in common]) for t in runs}}  # fmt: skip
 
 
 def llm_cost(tag: str) -> dict | None:
@@ -269,6 +291,7 @@ def main() -> None:
     N = len(d["pairs"])
     order = np.array(sorted(range(N), key=lambda i: (uncertainty(d["gbm"][i], d["thr"]), d["pairs"][i])))
     band = read_jsonl(LLM_DIR / "qwen3-14b_band.jsonl")
+    reasons = read_jsonl(LLM_DIR / "qwen3-14b_reasons.jsonl")
     llm_all = {**band, **read_jsonl(LLM_DIR / "qwen3-14b_all.jsonl")}  # the head run skips pairs the band run judged
     tail = read_jsonl(LLM_DIR / "qwen3-14b_tail.jsonl")
     # Head coverage: how many pairs, in uncertainty order, have an LLM verdict with no gaps.
@@ -280,7 +303,7 @@ def main() -> None:
     print(f"{N} test candidate pairs; LLM head covers {covered} ({covered / N:.1%}); band holds {in_band.sum()} "
           f"({in_band.mean():.1%}); tail sample {len(tail)}")  # fmt: skip
 
-    curve = budget_curve(d, llm_all, order, covered)
+    curve = budget_curve(d, llm_all, order, covered, extra=(int(in_band.sum()),))
     everything = llm_everything_estimate(d, llm_all, tail, order, covered)
     verdicts = band or llm_all
     scores = method_scores(d, verdicts)
@@ -317,7 +340,8 @@ def main() -> None:
         "clusters": clustering(d, scores),
         "recall_by_noise": recall_by_noise(d, scores),
         "hard_negatives": hard_negatives(d, scores),
-        "examples": examples(d, scores, band),
+        "examples": examples(d, scores, band, reasons),
+        "prompt_dev": prompt_dev(),
         "llm_runs": {t: llm_cost(t) for t in sorted({f.stem for f in LLM_DIR.glob("*.jsonl")})},
         "model_sizes": sizes,
         "thinking": think,
