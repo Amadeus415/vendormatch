@@ -95,7 +95,7 @@ def _numbers(tokens: set[str]) -> set[str]:
     return {t for t in tokens if NUMBERISH.match(t)}
 
 
-def _name_features(a: str, b: str, idf: Mapping[str, float]) -> list[float]:
+def _name_features(a: str, b: str, idf: Mapping[str, float], max_idf: float) -> list[float]:
     ta, tb = a.split(), b.split()
     sa, sb = set(ta), set(tb)
     ca, cb = a.replace(" ", ""), b.replace(" ", "")
@@ -107,7 +107,6 @@ def _name_features(a: str, b: str, idf: Mapping[str, float]) -> list[float]:
     w_union = sum(idf.get(t, 1.0) for t in union) or 1.0
     w_shared = sum(idf.get(t, 1.0) for t in sa & sb)
     unshared = [idf.get(t, 1.0) for t in (sa ^ sb) if t not in WEAK]
-    max_idf = max(idf.values(), default=1.0)
     na, nb = _numbers(sa), _numbers(sb)
     return [
         fuzz.ratio(a, b) / 100,
@@ -151,15 +150,16 @@ def pair_features(p: Prepared, pairs: Sequence[Pair]) -> np.ndarray:
     """Feature matrix with one row per pair, columns in FEATURES order."""
     out = np.empty((len(pairs), len(FEATURES)), dtype=np.float32)
     cosines = pair_cosines(p, pairs)
+    max_idf = max(p.idf.values(), default=1.0)
     for k, (i, j) in enumerate(pairs):
         best = None
         for a in p.variants[i]:
             for b in p.variants[j]:
-                f = _name_features(a, b, p.idf)
+                f = _name_features(a, b, p.idf, max_idf)
                 best = f if best is None else [max(x, y) for x, y in zip(best, f, strict=True)]
         # Two "mismatch" features should take the min over variants, not the max.
         if len(p.variants[i]) * len(p.variants[j]) > 1:
-            mins = [_name_features(a, b, p.idf) for a in p.variants[i] for b in p.variants[j]]
+            mins = [_name_features(a, b, p.idf, max_idf) for a in p.variants[i] for b in p.variants[j]]
             best[10] = min(m[10] for m in mins)
             best[11] = min(m[11] for m in mins)
         city = (
