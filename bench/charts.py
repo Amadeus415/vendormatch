@@ -101,35 +101,37 @@ def hero(c: dict, s: dict) -> None:
            f"gradient-boosted model on its most uncertain pairs first. {setup(c['meta'])}")
     fig, ax = figure(title, sub, size=(8, 4.8))
     fig.subplots_adjust(right=0.95)
+    ylo, yhi = jw - 0.006, max(y.max(), shipped) + 0.006
     xs = np.maximum(x, 1e-4)  # the 0% point sits at the left edge of the log axis
     ax.plot(xs, y, color=ACCENT, lw=2, zorder=3)
     ax.scatter(xs[1:], y[1:], color=ACCENT, s=14, zorder=3, edgecolor="white", linewidth=0.8)
-    ax.text(xs[-1] * 1.08, y[-1], "LLM overrules\nthe model", fontsize=8.5, color=MUTED, va="center")
+    ax.annotate("LLM overrules the model,\nmost uncertain pairs first", (xs[2], y[2]), xytext=(-10, 10),
+                textcoords="offset points", fontsize=8.5, color=MUTED, ha="right")  # fmt: skip
     ax.axhline(base, color=LIGHT, lw=1)
-    ax.text(1.1e-4, base - 0.0012, f"model alone {base:.4f}", color=MUTED, fontsize=8.5, va="top")
+    ax.text(1.1e-4, base - 0.0008, f"model alone {base:.4f}", color=MUTED, fontsize=8.5, va="top")
     ax.axhline(jw, color=OTHER, lw=1)
-    ax.text(1.1e-4, jw + 0.0012, f"best single string similarity (Jaro-Winkler) {jw:.3f}", color=MUTED,
+    ax.text(1.1e-4, jw + 0.0008, f"best single string similarity (Jaro-Winkler) {jw:.3f}", color=MUTED,
             fontsize=8.5, va="bottom")  # fmt: skip
-    ax.annotate(f"peak {y[peak]:.4f} at {x[peak]:.1%}", (xs[peak], y[peak]), xytext=(-20, 14),
+    ax.annotate(f"peak {y[peak]:.4f}\nat {x[peak]:.1%}", (xs[peak], y[peak]), xytext=(0, 9),
                 textcoords="offset points", fontsize=9, color=INK, ha="center")  # fmt: skip
-    ax.scatter([band_frac], [shipped], s=90, marker="D", color=INK, edgecolor="white", linewidth=1.5, zorder=5)
-    ax.annotate(f"shipped: model + LLM combined\non {band_frac:.1%} of pairs, F1 {shipped:.4f}",
-                (band_frac, shipped), xytext=(14, -36), textcoords="offset points", fontsize=9, color=INK,
-                arrowprops={"arrowstyle": "-", "color": MUTED, "lw": 0.8})  # fmt: skip
-    if everything:
+    ax.scatter([band_frac], [shipped], s=80, marker="D", color=INK, edgecolor="white", linewidth=1.5, zorder=5)
+    ax.annotate(f"shipped: model and LLM combined\non the {band_frac:.1%} band, F1 {shipped:.4f}",
+                (band_frac, shipped), xytext=(-40, -58), textcoords="offset points", fontsize=9, color=INK,
+                ha="center", arrowprops={"arrowstyle": "-", "color": MUTED, "lw": 0.8})  # fmt: skip
+    if everything:  # far below the zoomed range: draw it at the bottom edge and say where it is
+        ax.annotate("", xy=(1.0, ylo + 0.0005), xytext=(1.0, ylo + 0.006),
+                    arrowprops={"arrowstyle": "-|>", "color": ACCENT, "lw": 1.2})  # fmt: skip
         lo_ci, hi_ci = everything["f1_ci95"]
-        ax.plot([x[-1], 1.0], [y[-1], everything["f1"]], color=ACCENT, lw=1, ls=(0, (2, 3)), zorder=2)
-        ax.errorbar([1.0], [everything["f1"]], yerr=[[everything["f1"] - lo_ci], [hi_ci - everything["f1"]]],
-                    fmt="o", color=ACCENT, ms=6, mec="white", capsize=3, lw=1, zorder=4)  # fmt: skip
-        ax.annotate(f"LLM on every pair\n{everything['f1']:.3f} (estimated)", (1.0, everything["f1"]),
-                    xytext=(-10, 12), textcoords="offset points", ha="right", fontsize=9, color=INK)  # fmt: skip
+        label = (f"LLM on every pair: F1 {everything['f1']:.3f}\n(estimated, 95% CI {lo_ci:.2f}-{hi_ci:.2f}), "
+                 "off this scale")
+        ax.text(0.92, ylo + 0.0035, label, ha="right", va="center", fontsize=9, color=INK)
+        ax.plot([xs[-1], 1.0], [y[-1], ylo + 0.006], color=ACCENT, lw=1, ls=(0, (2, 3)), zorder=2)
     ax.set_xscale("log")
     ax.set_xlim(0.75e-4, 1.6)
+    ax.set_ylim(ylo, yhi)
     ax.set_xticks([1e-4, 1e-3, 1e-2, 1e-1, 1.0], ["0%", "0.1%", "1%", "10%", "100%"])
     ax.set_xlabel("Share of candidate pairs sent to the LLM (log scale)")
     ax.set_ylabel("Pair F1 on test")
-    lows = [jw, base, y.min()] + ([everything["f1_ci95"][0]] if everything else [])
-    ax.set_ylim(min(lows) - 0.008, max(y.max(), shipped) + 0.008)
     save(fig, "hero_cascade_budget")
 
 
@@ -144,7 +146,7 @@ def methods_bar(s: dict, c: dict) -> None:
         cb = c["cascade_band"]
         rows.append((LABELS["cascade"], cb["precision"], cb["recall"], cb["f1"]))
     ceiling = c["true_in_candidates"] / c["true_pairs"]
-    fig, ax = figure("Each stage adds accuracy; string similarity alone stalls below 0.90",
+    fig, ax = figure("The learned scorer beats every string similarity; the LLM adds precision",
                      f"Pair F1 on test, thresholds tuned on dev. Recall counts all {c['true_pairs']:,} true pairs, and "
                      f"blocking caps it at {ceiling:.1%}. {setup(s['meta'])}", size=(8, 4.8), left=0.27)  # fmt: skip
     fig.subplots_adjust(right=0.78)
@@ -278,7 +280,7 @@ def recall_by_noise(c: dict) -> None:
     fig, ax = figure("Former names and aliases are where every method loses recall",
                      "Share of true test pairs found, by what was done to either record (pair count in brackets). "
                      f"Grey bar = what blocking lets through. {setup(c['meta'])}",
-                     size=(8, 6.4), left=0.36)  # fmt: skip
+                     size=(8, 6.8), left=0.36)  # fmt: skip
     y = np.arange(len(tags))
     ax.barh(y, [rb[t]["blocking"] for t in tags], height=0.5, color="#EEF2F5", label="blocking ceiling")
     series = [("rapidfuzz_token_set", OTHER, "rapidfuzz token_set"), ("gbm", INK, "gradient boosting")]
@@ -287,7 +289,7 @@ def recall_by_noise(c: dict) -> None:
     for key, color, label in series:
         ax.scatter([rb[t][key] for t in tags], y, color=color, s=30, zorder=3, edgecolor="white", linewidth=1,
                    label=label)  # fmt: skip
-    leg = ax.legend(loc="lower left", bbox_to_anchor=(-0.01, 1.0), ncol=4, frameon=False, fontsize=9,
+    leg = ax.legend(loc="lower left", bbox_to_anchor=(-0.01, 1.0), ncol=2, frameon=False, fontsize=9,
                     handletextpad=0.3, columnspacing=1.2)  # fmt: skip
     for t in leg.get_texts():
         t.set_color(INK)
@@ -308,25 +310,32 @@ def band_models(c: dict) -> None:
         return
     any_band = next(iter(sizes.values()))["band"]
     gbm_f1 = any_band["gbm"]["f1"]
-    fig, ax = figure("On the uncertain pairs, only the 14B judge beats the model it is backing up",
-                     f"F1 on the {any_band['pairs']:,} test pairs in the uncertain band; thinking off, decision token "
-                     f"only, one pair at a time. {setup(c['meta'])}")  # fmt: skip
+    sub = (f"F1 on the {any_band['pairs']:,} test pairs in the uncertain band ({any_band['positives']} true "
+           f"matches); thinking off, decision token only, one pair at a time. {setup(c['meta'])}")
+    fig, ax = figure("On the uncertain pairs, only the 14B judge beats the model it backs up", sub)
     ax.axhline(gbm_f1, color=OTHER, lw=1)
-    ax.text(0.02, gbm_f1 + 0.006, f"gradient-boosted model on the same pairs: {gbm_f1:.3f}", color=MUTED, fontsize=9,
-            transform=ax.get_yaxis_transform())  # fmt: skip
-    pts = sorted(((v["cost"]["mean_seconds_per_pair"], v["band"]["llm"]["f1"], k) for k, v in sizes.items()))
-    ax.plot([p[0] for p in pts], [p[1] for p in pts], color=GRID, lw=1.2, zorder=1)
-    for x, y, tag in pts:
+    ax.text(0.98, gbm_f1 + 0.015, f"gradient-boosted model on the same pairs: {gbm_f1:.3f}", color=MUTED,
+            fontsize=9, ha="right", transform=ax.get_yaxis_transform())  # fmt: skip
+    pts = sorted(((v["cost"]["mean_seconds_per_pair"], v["band"]["llm"], k) for k, v in sizes.items()),
+                 key=lambda t: t[0])  # fmt: skip
+    for sec, st, tag in pts:
         name = tag.split("_")[0].replace("qwen3-", "Qwen3-").replace("b", "B")
-        ax.scatter([x], [y], s=70, color=ACCENT if "14b" in tag else INK, edgecolor="white", linewidth=2, zorder=3)
-        ax.annotate(f"{name}\nF1 {y:.3f}, {x:.2f} s/pair", (x, y), xytext=(8, -4), textcoords="offset points",
-                    fontsize=9, color=INK, va="top")  # fmt: skip
+        if st["recall"] > 0.98:
+            habit = "says match to almost every pair"
+        elif st["recall"] < 0.1:
+            habit = f"says no match to {1 - st['recall']:.0%} of true matches"
+        else:
+            habit = f"precision {st['precision']:.2f}, recall {st['recall']:.2f}"
+        ax.scatter([sec], [st["f1"]], s=70, color=ACCENT if "14b" in tag else INK, edgecolor="white", linewidth=2,
+                   zorder=3)  # fmt: skip
+        ax.annotate(f"{name}: F1 {st['f1']:.3f}, {sec:.2f} s/pair\n{habit}", (sec, st["f1"]),
+                    xytext=(-8 if "14b" in tag else 10, 12), textcoords="offset points", fontsize=9, color=INK,
+                    ha="right" if "14b" in tag else "left")  # fmt: skip
     ax.set_xscale("log")
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g} s"))
     xs = [p[0] for p in pts]
-    ax.set_xlim(min(xs) / 1.6, max(xs) * 2.5)
-    ys = [p[1] for p in pts] + [gbm_f1]
-    ax.set_ylim(min(ys) - 0.05, max(ys) + 0.05)
+    ax.set_xlim(min(xs) / 1.8, max(xs) * 1.8)
+    ax.set_ylim(0, 0.9)
     ax.set_xlabel("Seconds per pair on the M4 Pro (log scale)")
     ax.set_ylabel("F1 on band pairs")
     save(fig, "llm_model_size")
@@ -385,7 +394,7 @@ def clusters(c: dict) -> None:
                label="union-find (any edge merges)")  # fmt: skip
     ax.scatter(al, y, color=ACCENT, s=40, zorder=3, edgecolor="white", linewidth=1.5,
                label="average linkage (shipped)")  # fmt: skip
-    leg = ax.legend(loc="upper left", frameon=False, fontsize=9)
+    leg = ax.legend(loc="lower left", frameon=False, fontsize=9)
     for t in leg.get_texts():
         t.set_color(INK)
     for yi, a, b in zip(y, uf, al, strict=True):

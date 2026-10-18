@@ -180,8 +180,8 @@ def hard_negatives(d, scores: dict[str, np.ndarray]) -> dict:
     return out
 
 
-def band_comparison(d, band_llm: dict) -> dict:
-    """Inside the uncertain band only: GBM alone vs the LLM alone, on the same pairs."""
+def band_comparison(d, band_llm: dict, combined: np.ndarray | None = None) -> dict:
+    """Inside the uncertain band only: GBM alone vs the LLM alone (and the shipped combination), same pairs."""
     idx = [d["index"][p] for p in band_llm if p in d["index"]]
     if not idx:
         return {}
@@ -195,7 +195,10 @@ def band_comparison(d, band_llm: dict) -> dict:
         fn = int((~pred & (y == 1)).sum())
         return {**prf(tp, fp, fn), "accuracy": float((pred == (y == 1)).mean())}
 
-    return {"pairs": len(idx), "positives": int(y.sum()), "gbm": stats(gbm), "llm": stats(llm)}
+    out = {"pairs": len(idx), "positives": int(y.sum()), "gbm": stats(gbm), "llm": stats(llm)}
+    if combined is not None:
+        out["combined"] = stats(combined[idx] >= 0.5)
+    return out
 
 
 def examples(d, scores: dict[str, np.ndarray], band_llm: dict, reasons: dict, k: int = 12) -> dict:
@@ -352,7 +355,7 @@ def main() -> None:
         "cascade_band": cascade_pair,
         "budget_curve": curve,
         "llm_everything": everything,
-        "band_comparison": band_comparison(d, band),
+        "band_comparison": band_comparison(d, band, scores.get("cascade")),
         "clusters": clustering(d, scores),
         "recall_by_noise": recall_by_noise(d, scores),
         "hard_negatives": hard_negatives(d, scores),
