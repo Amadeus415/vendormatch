@@ -54,6 +54,7 @@ LABELS = {
     "logreg": "Logistic regression",
     "gbm": "Gradient boosting",
     "cascade": "GBM + LLM cascade",
+    "cascade_raw": "Cascade, raw LLM scores",
 }
 
 
@@ -92,40 +93,43 @@ def hero(c: dict, s: dict) -> None:
     base = c["gbm_only"]["f1"]
     jw = s["methods"]["jaro_winkler"]["f1"]
     band_frac = c["band_pairs"] / c["candidates"]
-    casc = c["cascade_band"]["f1"]
+    shipped = c["cascade_band"]["f1"]
+    peak = int(np.argmax(y))
     everything = c.get("llm_everything")
-    title = f"The LLM judges {band_frac:.1%} of pairs and lifts F1 from {base:.3f} to {casc:.3f}"
-    sub = (f"Pair F1 on the test split ({c['candidates']:,} candidate pairs) as Qwen3-14B-4bit takes over the "
-           f"pairs the gradient-boosted model is least sure about, most uncertain first. {setup(c['meta'])}")
+    title = f"The LLM helps on the {x[peak]:.0%} of pairs the model is least sure of, and hurts past that"
+    sub = (f"Pair F1 on the test split ({c['candidates']:,} candidate pairs) as Qwen3-14B-4bit overrules the "
+           f"gradient-boosted model on its most uncertain pairs first. {setup(c['meta'])}")
     fig, ax = figure(title, sub, size=(8, 4.8))
-    fig.subplots_adjust(right=0.94)
+    fig.subplots_adjust(right=0.95)
     xs = np.maximum(x, 1e-4)  # the 0% point sits at the left edge of the log axis
     ax.plot(xs, y, color=ACCENT, lw=2, zorder=3)
-    ax.scatter(xs[1:], y[1:], color=ACCENT, s=16, zorder=3, edgecolor="white", linewidth=0.8)
-    ax.scatter([1e-4], [base], color=INK, s=40, zorder=4, edgecolor="white", linewidth=1.5)
-    ax.annotate(f"model alone\n{base:.3f}", (1e-4, base), xytext=(8, -26), textcoords="offset points",
-                fontsize=9, color=INK)  # fmt: skip
+    ax.scatter(xs[1:], y[1:], color=ACCENT, s=14, zorder=3, edgecolor="white", linewidth=0.8)
+    ax.text(xs[-1] * 1.08, y[-1], "LLM overrules\nthe model", fontsize=8.5, color=MUTED, va="center")
+    ax.axhline(base, color=LIGHT, lw=1)
+    ax.text(1.1e-4, base - 0.0012, f"model alone {base:.4f}", color=MUTED, fontsize=8.5, va="top")
     ax.axhline(jw, color=OTHER, lw=1)
-    ax.text(1.1e-4, jw + 0.0015, f"best single string similarity (Jaro-Winkler) {jw:.3f}", color=MUTED,
+    ax.text(1.1e-4, jw + 0.0012, f"best single string similarity (Jaro-Winkler) {jw:.3f}", color=MUTED,
             fontsize=8.5, va="bottom")  # fmt: skip
-    ax.scatter([band_frac], [casc], s=90, color=ACCENT, edgecolor="white", linewidth=2, zorder=5)
-    ax.annotate(f"shipped cascade: {band_frac:.1%} of pairs\nF1 {casc:.3f}", (band_frac, casc), xytext=(-150, 12),
-                textcoords="offset points", fontsize=9, color=INK,
+    ax.annotate(f"peak {y[peak]:.4f} at {x[peak]:.1%}", (xs[peak], y[peak]), xytext=(-20, 14),
+                textcoords="offset points", fontsize=9, color=INK, ha="center")  # fmt: skip
+    ax.scatter([band_frac], [shipped], s=90, marker="D", color=INK, edgecolor="white", linewidth=1.5, zorder=5)
+    ax.annotate(f"shipped: model + LLM combined\non {band_frac:.1%} of pairs, F1 {shipped:.4f}",
+                (band_frac, shipped), xytext=(14, -36), textcoords="offset points", fontsize=9, color=INK,
                 arrowprops={"arrowstyle": "-", "color": MUTED, "lw": 0.8})  # fmt: skip
     if everything:
         lo_ci, hi_ci = everything["f1_ci95"]
         ax.plot([x[-1], 1.0], [y[-1], everything["f1"]], color=ACCENT, lw=1, ls=(0, (2, 3)), zorder=2)
         ax.errorbar([1.0], [everything["f1"]], yerr=[[everything["f1"] - lo_ci], [hi_ci - everything["f1"]]],
-                    fmt="o", color=INK, ms=6, mec="white", capsize=3, lw=1, zorder=4)  # fmt: skip
+                    fmt="o", color=ACCENT, ms=6, mec="white", capsize=3, lw=1, zorder=4)  # fmt: skip
         ax.annotate(f"LLM on every pair\n{everything['f1']:.3f} (estimated)", (1.0, everything["f1"]),
-                    xytext=(-10, -34), textcoords="offset points", ha="right", fontsize=9, color=INK)  # fmt: skip
+                    xytext=(-10, 12), textcoords="offset points", ha="right", fontsize=9, color=INK)  # fmt: skip
     ax.set_xscale("log")
-    ax.set_xlim(0.75e-4, 1.5)
+    ax.set_xlim(0.75e-4, 1.6)
     ax.set_xticks([1e-4, 1e-3, 1e-2, 1e-1, 1.0], ["0%", "0.1%", "1%", "10%", "100%"])
     ax.set_xlabel("Share of candidate pairs sent to the LLM (log scale)")
     ax.set_ylabel("Pair F1 on test")
-    top = max(y.max(), casc, everything["f1"] if everything else 0)
-    ax.set_ylim(min(jw, base) - 0.012, top + 0.012)
+    lows = [jw, base, y.min()] + ([everything["f1_ci95"][0]] if everything else [])
+    ax.set_ylim(min(lows) - 0.008, max(y.max(), shipped) + 0.008)
     save(fig, "hero_cascade_budget")
 
 
@@ -238,7 +242,7 @@ def threshold_sweep(s: dict) -> None:
     m = s["methods"]["gbm"]
     sw = m["sweep_test"]
     t = [r["threshold"] for r in sw]
-    fig, ax = figure("F1 is flat between 0.2 and 0.6, so the dev-chosen threshold transfers",
+    fig, ax = figure("F1 barely moves between thresholds 0.2 and 0.8, so the dev-chosen one transfers",
                      f"Gradient boosting on test, threshold swept. Dashed line = threshold picked on dev "
                      f"({m['threshold']:.2f}). {setup(s['meta'])}")  # fmt: skip
     ax.plot(t, [r["f1"] for r in sw], color=ACCENT, lw=2)
@@ -367,7 +371,8 @@ def scaling(sc: dict) -> None:
 
 def clusters(c: dict) -> None:
     cl = c["clusters"]
-    order = [k for k in ["exact", "tfidf_cosine", "rapidfuzz_token_set", "jaro_winkler", "gbm", "cascade"] if k in cl]
+    order = ["exact", "tfidf_cosine", "rapidfuzz_token_set", "jaro_winkler", "gbm", "cascade_raw", "cascade"]
+    order = [k for k in order if k in cl]
     sub = f"Cluster-level pairwise F1 on test, same pair scores clustered two ways. {setup(c['meta'])}"
     fig, ax = figure("Average linkage repairs the over-merging union-find causes", sub)
     fig.subplots_adjust(left=0.26)

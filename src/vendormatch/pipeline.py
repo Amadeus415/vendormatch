@@ -11,6 +11,7 @@ import numpy as np
 from .blocking import Pair, candidates
 from .cluster import average_link, golden_names, union_find
 from .features import pair_features, prepare
+from .llm import combined_score
 from .scorer import PairScorer
 
 
@@ -71,7 +72,8 @@ def dedupe(
         for n, (pair, s) in enumerate(zip(pairs, scores, strict=True)):
             if lo <= s <= hi:
                 j = llm.judge(records[pair[0]], records[pair[1]])
-                final[n] = j.p_match
+                combined = combined_score(float(s), j.match)
+                final[n] = j.p_match if combined is None else combined
                 decided_by[n] = "llm"
                 reasons[pair] = j.reason
         t["llm"] = time.perf_counter() - t0

@@ -24,6 +24,7 @@ import numpy as np
 
 from vendormatch.cluster import average_link, union_find
 from vendormatch.features import FEATURES
+from vendormatch.llm import combined_score
 from vendormatch.metrics import cluster_scores, pair_scores, prf, true_pairs
 from vendormatch.pipeline import _center
 
@@ -130,11 +131,14 @@ def method_scores(d, llm: dict) -> dict[str, np.ndarray]:
     out["gbm"] = _center(d["gbm"], d["thr"])
     if llm:
         lo, hi = d["band"]
-        casc = out["gbm"].copy()
+        raw, cal = out["gbm"].copy(), out["gbm"].copy()
         for i, p in enumerate(d["pairs"]):
             if lo <= d["gbm"][i] <= hi and p in llm:
-                casc[i] = llm[p]["p_match"]
-        out["cascade"] = casc
+                raw[i] = llm[p]["p_match"]
+                c = combined_score(float(d["gbm"][i]), llm[p]["match"])
+                cal[i] = raw[i] if c is None else c
+        out["cascade"] = cal  # what the pipeline ships: verdict and model score combined (fit on dev)
+        out["cascade_raw"] = raw  # the LLM overrules the model with its own probability
     return out
 
 
@@ -248,6 +252,16 @@ def examples(d, scores: dict[str, np.ndarray], band_llm: dict, reasons: dict, k:
     return out
 
 
+def gbm_band_accuracy(d) -> dict:
+    """The GBM's accuracy inside the uncertain band: dev (out-of-fold, folds split by company) vs test."""
+    lo, hi = d["band"]
+    dev = [r for r in csv.DictReader((RESULTS / "dev_pairs.csv").open()) if lo <= float(r["gbm"]) <= hi]
+    dev_acc = float(np.mean([(float(r["gbm"]) >= d["thr"]) == (r["label"] == "1") for r in dev]))
+    m = (d["gbm"] >= lo) & (d["gbm"] <= hi)
+    test_acc = float(((d["gbm"][m] >= d["thr"]) == (d["y"][m] == 1)).mean())
+    return {"dev_pairs": len(dev), "dev_out_of_fold": dev_acc, "test_pairs": int(m.sum()), "test": test_acc}
+
+
 def prompt_dev() -> dict:
     """Prompt v1 vs v2 on the same dev pairs, next to the GBM's out-of-fold scores on those pairs."""
     runs = {t: read_jsonl(LLM_DIR / f"dev-prompt-{t}.jsonl") for t in ("v1", "v2")}
@@ -265,7 +279,9 @@ def prompt_dev() -> dict:
 
     return {"pairs": len(common), "positives": int(y.sum()),
             "gbm_out_of_fold": stats([oof[p] >= thr for p in common]),
-            **{f"llm_{t}": stats([runs[t][p]["match"] for p in common]) for t in runs}}  # fmt: skip
+            **{f"llm_{t}": stats([runs[t][p]["match"] for p in common]) for t in runs},
+            "llm_v2_averaged_with_gbm": stats([(runs["v2"][p]["p_match"] + float(_center([oof[p]], thr)[0])) / 2 >= 0.5
+                                               for p in common])}  # fmt: skip
 
 
 def llm_cost(tag: str) -> dict | None:
@@ -342,6 +358,7 @@ def main() -> None:
         "hard_negatives": hard_negatives(d, scores),
         "examples": examples(d, scores, band, reasons),
         "prompt_dev": prompt_dev(),
+        "gbm_band_accuracy": gbm_band_accuracy(d),
         "llm_runs": {t: llm_cost(t) for t in sorted({f.stem for f in LLM_DIR.glob("*.jsonl")})},
         "model_sizes": sizes,
         "thinking": think,

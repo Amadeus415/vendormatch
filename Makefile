@@ -21,8 +21,9 @@ bench:
 llm:
 	LLM_MODEL=$(LLM_MODEL) GPU_LOCK="$(GPU_LOCK)" bash bench/run_llm_all.sh
 
-# Combine everything on disk into results/cascade.json and redraw docs/*.png.
+# Calibrate the judge on dev, combine everything on disk into results/cascade.json, redraw docs/*.png.
 charts:
+	$(RUN) bench.calibrate
 	$(RUN) bench.run_cascade
 	$(RUN) bench.charts
 

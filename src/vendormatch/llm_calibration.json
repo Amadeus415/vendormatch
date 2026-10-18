@@ -1,0 +1,9 @@
+{
+  "intercept": -1.5557570766609379,
+  "w_model": 0.6592883174328633,
+  "w_llm": 1.7385035938997282,
+  "threshold": 0.30590531317941105,
+  "dev_band_pairs": 1652,
+  "prompt": "v2",
+  "model": "mlx-community/Qwen3-14B-4bit"
+}

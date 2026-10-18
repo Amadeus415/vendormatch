@@ -30,3 +30,14 @@ def test_judge_obvious_cases():
     )
     assert yes.match and yes.p_match > 0.5 and yes.reason
     assert not no.match
+
+
+def test_combined_score_is_monotone_in_model_score_and_verdict():
+    from vendormatch.llm import CALIBRATION_PATH, combined_score
+
+    if not CALIBRATION_PATH.exists():
+        pytest.skip("no calibration file")
+    lo_no, hi_no = combined_score(0.05, False), combined_score(0.8, False)
+    lo_yes, hi_yes = combined_score(0.05, True), combined_score(0.8, True)
+    assert 0 < lo_no < hi_no < 1 and 0 < lo_yes < hi_yes < 1
+    assert lo_yes > lo_no and hi_yes > hi_no

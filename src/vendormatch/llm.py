@@ -12,11 +12,15 @@ thinking_budget > 0 the model may think for up to that many tokens before it has
 
 from __future__ import annotations
 
+import json
+import math
 import time
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass
+from pathlib import Path
 
 DEFAULT_MODEL = "mlx-community/Qwen3-14B-4bit"
+CALIBRATION_PATH = Path(__file__).with_name("llm_calibration.json")
 
 # v1 was the first draft. v2 came from reading v1's mistakes on dev pairs (it treated typos and
 # remit-to addresses as proof of different companies). Both are kept so the comparison can be rerun.
@@ -71,6 +75,20 @@ def describe(record: Mapping[str, str | None], label: str) -> str:
 
 def user_message(a: Mapping[str, str | None], b: Mapping[str, str | None]) -> str:
     return describe(a, "A") + "\n" + describe(b, "B")
+
+
+def combined_score(model_score: float, said_match: bool) -> float | None:
+    """P(same company) from the model's score and the judge's verdict, using the logistic regression fit
+    on dev band pairs by bench/calibrate.py. None if that file is missing (then the verdict stands alone).
+    The judge's own probability is almost always 0 or 1, which is too confident to feed clustering."""
+    if not CALIBRATION_PATH.exists():
+        return None
+    c = json.loads(CALIBRATION_PATH.read_text())
+    eps = 1e-6
+    p = min(max(model_score, eps), 1 - eps)
+    t = c["threshold"]
+    z = math.log(p / (1 - p)) - math.log(t / (1 - t))
+    return 1 / (1 + math.exp(-(c["intercept"] + c["w_model"] * z + c["w_llm"] * float(said_match))))
 
 
 @dataclass

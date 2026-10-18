@@ -46,3 +46,6 @@ for entry in $SMALL; do
   path=${entry#*=}
   until_done --tag "${tag}_band" --pairs band --no-reason --model "$path" --model-id "mlx-community/$(basename "$path")"
 done
+
+# 7. Every dev pair in the band (v2 prompt), to calibrate the judge's yes/no into probabilities for clustering.
+until_done --tag dev-band-v2 --split dev --pairs band --no-reason --reuse dev-prompt-v2 --model "$MODEL" --model-id $ID
