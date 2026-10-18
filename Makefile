@@ -12,7 +12,9 @@ data:
 	$(RUN) bench.generate --scale
 
 # Everything that runs on the CPU: blocking, scorers (trains the shipped model), scaling.
+# generate is deterministic: it rewrites dev/test byte for byte and adds the 50k scale.csv (not committed).
 bench:
+	$(RUN) bench.generate --scale
 	$(RUN) bench.run_blocking
 	$(RUN) bench.run_scorers
 	$(RUN) bench.run_scaling
