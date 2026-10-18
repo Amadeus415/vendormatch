@@ -1,0 +1,29 @@
+{
+  "model": "mlx-community/Qwen3-14B-4bit",
+  "split": "test",
+  "pairs": "band",
+  "sample": 150,
+  "reason": true,
+  "thinking_budget": 0,
+  "prompt": "v2",
+  "total_pairs": 150,
+  "runs": [
+    {
+      "pairs": 150,
+      "seconds": 200.19921791600063,
+      "load_seconds": 5.3994053329806775,
+      "started_after": 0,
+      "date": "2026-10-17",
+      "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+      "python": "3.12.13",
+      "libraries": {
+        "numpy": "2.5.4",
+        "scikit-learn": "1.9.1",
+        "rapidfuzz": "3.14.6",
+        "mlx": "0.32.4",
+        "mlx-lm": "0.32.2"
+      },
+      "commit": "9947fe4-dirty"
+    }
+  ]
+}

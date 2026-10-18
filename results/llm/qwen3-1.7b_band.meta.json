@@ -1,0 +1,46 @@
+{
+  "model": "mlx-community/Qwen3-1.7B-4bit",
+  "split": "test",
+  "pairs": "band",
+  "sample": 0,
+  "reason": false,
+  "thinking_budget": 0,
+  "prompt": "v2",
+  "total_pairs": 1142,
+  "runs": [
+    {
+      "pairs": 600,
+      "seconds": 33.074008957948536,
+      "load_seconds": 2.0288565419614315,
+      "started_after": 0,
+      "date": "2026-10-17",
+      "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+      "python": "3.12.13",
+      "libraries": {
+        "numpy": "2.5.4",
+        "scikit-learn": "1.9.1",
+        "rapidfuzz": "3.14.6",
+        "mlx": "0.32.4",
+        "mlx-lm": "0.32.2"
+      },
+      "commit": "4d4f169-dirty"
+    },
+    {
+      "pairs": 542,
+      "seconds": 29.51590270799352,
+      "load_seconds": 2.0443639169679955,
+      "started_after": 600,
+      "date": "2026-10-17",
+      "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+      "python": "3.12.13",
+      "libraries": {
+        "numpy": "2.5.4",
+        "scikit-learn": "1.9.1",
+        "rapidfuzz": "3.14.6",
+        "mlx": "0.32.4",
+        "mlx-lm": "0.32.2"
+      },
+      "commit": "4d4f169-dirty"
+    }
+  ]
+}

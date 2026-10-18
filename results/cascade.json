@@ -1,0 +1,2942 @@
+{
+  "meta": {
+    "date": "2026-10-17",
+    "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+    "python": "3.12.13",
+    "libraries": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "rapidfuzz": "3.14.6",
+      "mlx": "0.32.4",
+      "mlx-lm": "0.32.2"
+    },
+    "commit": "0264eec-dirty",
+    "threshold": 0.30590531317941105,
+    "band": [
+      0.021471303988272954,
+      0.898499938416941
+    ]
+  },
+  "candidates": 32089,
+  "true_pairs": 7112,
+  "true_in_candidates": 6631,
+  "band_pairs": 1142,
+  "gbm_only": {
+    "precision": 0.9590469099032017,
+    "recall": 0.905511811023622,
+    "f1": 0.9315108121790698,
+    "tp": 6440,
+    "fp": 275,
+    "fn": 672
+  },
+  "cascade_band": {
+    "precision": 0.9737281700835232,
+    "recall": 0.9015748031496063,
+    "f1": 0.9362634153464262,
+    "tp": 6412,
+    "fp": 173,
+    "fn": 700
+  },
+  "budget_curve": [
+    {
+      "fraction": 0.0,
+      "llm_pairs": 0,
+      "precision": 0.9590469099032017,
+      "recall": 0.905511811023622,
+      "f1": 0.9315108121790698,
+      "tp": 6440,
+      "fp": 275,
+      "fn": 672
+    },
+    {
+      "fraction": 0.0024930661597432143,
+      "llm_pairs": 80,
+      "precision": 0.9615212527964205,
+      "recall": 0.906496062992126,
+      "f1": 0.933198234059492,
+      "tp": 6447,
+      "fp": 258,
+      "fn": 665
+    },
+    {
+      "fraction": 0.0049861323194864285,
+      "llm_pairs": 160,
+      "precision": 0.9634273772204807,
+      "recall": 0.90748031496063,
+      "f1": 0.9346173340091232,
+      "tp": 6454,
+      "fp": 245,
+      "fn": 658
+    },
+    {
+      "fraction": 0.010003427965969647,
+      "llm_pairs": 321,
+      "precision": 0.965352449223417,
+      "recall": 0.9088863892013498,
+      "f1": 0.936268829663963,
+      "tp": 6464,
+      "fp": 232,
+      "fn": 648
+    },
+    {
+      "fraction": 0.014989560285456074,
+      "llm_pairs": 481,
+      "precision": 0.9677178299207891,
+      "recall": 0.9104330708661418,
+      "f1": 0.9382018401796711,
+      "tp": 6475,
+      "fp": 216,
+      "fn": 637
+    },
+    {
+      "fraction": 0.020006855931939294,
+      "llm_pairs": 642,
+      "precision": 0.9681661933941115,
+      "recall": 0.9108548931383577,
+      "f1": 0.9386365282909512,
+      "tp": 6478,
+      "fp": 213,
+      "fn": 634
+    },
+    {
+      "fraction": 0.03001028389790894,
+      "llm_pairs": 963,
+      "precision": 0.9665521875466627,
+      "recall": 0.9101518560179978,
+      "f1": 0.9375045260337461,
+      "tp": 6473,
+      "fp": 224,
+      "fn": 639
+    },
+    {
+      "fraction": 0.035588519430334385,
+      "llm_pairs": 1142,
+      "precision": 0.9659853796807399,
+      "recall": 0.9104330708661418,
+      "f1": 0.9373868982989504,
+      "tp": 6475,
+      "fp": 228,
+      "fn": 637
+    },
+    {
+      "fraction": 0.04001371186387859,
+      "llm_pairs": 1284,
+      "precision": 0.9641155449672424,
+      "recall": 0.9104330708661418,
+      "f1": 0.9365056407289557,
+      "tp": 6475,
+      "fp": 241,
+      "fn": 637
+    },
+    {
+      "fraction": 0.04998597650285144,
+      "llm_pairs": 1604,
+      "precision": 0.9612299465240641,
+      "recall": 0.9098706411698537,
+      "f1": 0.9348454203987286,
+      "tp": 6471,
+      "fp": 261,
+      "fn": 641
+    },
+    {
+      "fraction": 0.07501012808127396,
+      "llm_pairs": 2407,
+      "precision": 0.9547738693467337,
+      "recall": 0.9083239595050618,
+      "f1": 0.9309698803862229,
+      "tp": 6460,
+      "fp": 306,
+      "fn": 652
+    },
+    {
+      "fraction": 0.09348998099037054,
+      "llm_pairs": 3000,
+      "precision": 0.9509211495946942,
+      "recall": 0.907199100112486,
+      "f1": 0.9285457292940923,
+      "tp": 6452,
+      "fp": 333,
+      "fn": 660
+    }
+  ],
+  "llm_everything": {
+    "precision": 0.8005404693358901,
+    "recall": 0.8470219347581551,
+    "f1": 0.8231255283613302,
+    "f1_ci95": [
+      0.7472319128167642,
+      0.8857371264503395
+    ],
+    "exhaustive_pairs": 3000,
+    "tail_pairs": 29089,
+    "tail_sample": 800
+  },
+  "band_comparison": {
+    "pairs": 1142,
+    "positives": 378,
+    "gbm": {
+      "precision": 0.5860566448801743,
+      "recall": 0.7116402116402116,
+      "f1": 0.6427718040621266,
+      "tp": 269,
+      "fp": 190,
+      "fn": 109,
+      "accuracy": 0.7381786339754816
+    },
+    "llm": {
+      "precision": 0.680089485458613,
+      "recall": 0.8042328042328042,
+      "f1": 0.7369696969696969,
+      "tp": 304,
+      "fp": 143,
+      "fn": 74,
+      "accuracy": 0.8099824868651488
+    },
+    "combined": {
+      "precision": 0.7325227963525835,
+      "recall": 0.6375661375661376,
+      "f1": 0.6817538896746819,
+      "tp": 241,
+      "fp": 88,
+      "fn": 137,
+      "accuracy": 0.8029772329246935
+    }
+  },
+  "clusters": {
+    "exact": {
+      "union_find": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.5095613048368954,
+        "pairwise_f1": 0.6751117734724292,
+        "bcubed_precision": 1.0,
+        "bcubed_recall": 0.6730149995283167,
+        "bcubed_f1": 0.8045534555494886,
+        "exact_cluster_rate": 0.502,
+        "ari": 0.6749605066475225,
+        "n_pred_clusters": 2633,
+        "n_true_clusters": 1500
+      },
+      "average_link": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.5091394825646794,
+        "pairwise_f1": 0.6747414515978757,
+        "bcubed_precision": 1.0,
+        "bcubed_recall": 0.6727508568912928,
+        "bcubed_f1": 0.8043646836224732,
+        "exact_cluster_rate": 0.502,
+        "ari": 0.6745900954606522,
+        "n_pred_clusters": 2634,
+        "n_true_clusters": 1500
+      }
+    },
+    "tfidf_cosine": {
+      "union_find": {
+        "pairwise_precision": 0.91835058321012,
+        "pairwise_recall": 0.7859955005624297,
+        "pairwise_f1": 0.8470338662019851,
+        "bcubed_precision": 0.9703548658644411,
+        "bcubed_recall": 0.8566753666027274,
+        "bcubed_f1": 0.9099784948020541,
+        "exact_cluster_rate": 0.6913333333333334,
+        "ari": 0.846936547647371,
+        "n_pred_clusters": 1899,
+        "n_true_clusters": 1500
+      },
+      "average_link": {
+        "pairwise_precision": 0.9590612316922534,
+        "pairwise_recall": 0.7642013498312711,
+        "pairwise_f1": 0.8506142890680022,
+        "bcubed_precision": 0.9822850529762263,
+        "bcubed_recall": 0.8432119535025104,
+        "bcubed_f1": 0.907450952235838,
+        "exact_cluster_rate": 0.692,
+        "ari": 0.8505229002884107,
+        "n_pred_clusters": 1956,
+        "n_true_clusters": 1500
+      }
+    },
+    "rapidfuzz_token_set": {
+      "union_find": {
+        "pairwise_precision": 0.7321892875715028,
+        "pairwise_recall": 0.7919010123734533,
+        "pairwise_f1": 0.7608754390705214,
+        "bcubed_precision": 0.963987400068119,
+        "bcubed_recall": 0.8594153223693175,
+        "bcubed_f1": 0.9087027588530197,
+        "exact_cluster_rate": 0.704,
+        "ari": 0.7607040206562115,
+        "n_pred_clusters": 1874,
+        "n_true_clusters": 1500
+      },
+      "average_link": {
+        "pairwise_precision": 0.9526922415276106,
+        "pairwise_recall": 0.7786839145106862,
+        "pairwise_f1": 0.8569439071566731,
+        "bcubed_precision": 0.980755925660174,
+        "bcubed_recall": 0.8512352861021142,
+        "bcubed_f1": 0.911417091540076,
+        "exact_cluster_rate": 0.7033333333333334,
+        "ari": 0.8568551491839745,
+        "n_pred_clusters": 1919,
+        "n_true_clusters": 1500
+      }
+    },
+    "jaro_winkler": {
+      "union_find": {
+        "pairwise_precision": 0.862934362934363,
+        "pairwise_recall": 0.8799212598425197,
+        "pairwise_f1": 0.8713450292397661,
+        "bcubed_precision": 0.9623227666260904,
+        "bcubed_recall": 0.9183364254792826,
+        "bcubed_f1": 0.9398152024252804,
+        "exact_cluster_rate": 0.7826666666666666,
+        "ari": 0.8712554157808569,
+        "n_pred_clusters": 1678,
+        "n_true_clusters": 1500
+      },
+      "average_link": {
+        "pairwise_precision": 0.9596412556053812,
+        "pairwise_recall": 0.8726096737907761,
+        "pairwise_f1": 0.9140584726415789,
+        "bcubed_precision": 0.9809775373940022,
+        "bcubed_recall": 0.9139896020041298,
+        "bcubed_f1": 0.946299542969921,
+        "exact_cluster_rate": 0.7953333333333333,
+        "ari": 0.9140020068706729,
+        "n_pred_clusters": 1717,
+        "n_true_clusters": 1500
+      }
+    },
+    "gbm": {
+      "union_find": {
+        "pairwise_precision": 0.8836864120901363,
+        "pairwise_recall": 0.9208380202474691,
+        "pairwise_f1": 0.901879776905598,
+        "bcubed_precision": 0.9583768495060594,
+        "bcubed_recall": 0.9461804136138277,
+        "bcubed_f1": 0.9522395796891088,
+        "exact_cluster_rate": 0.8226666666666667,
+        "ari": 0.9018106978292492,
+        "n_pred_clusters": 1587,
+        "n_true_clusters": 1500
+      },
+      "average_link": {
+        "pairwise_precision": 0.9722808074721302,
+        "pairwise_recall": 0.90748031496063,
+        "pairwise_f1": 0.9387636363636365,
+        "bcubed_precision": 0.9870872334552722,
+        "bcubed_recall": 0.937654476274331,
+        "bcubed_f1": 0.9617360690464869,
+        "exact_cluster_rate": 0.85,
+        "ari": 0.9387228518800879,
+        "n_pred_clusters": 1657,
+        "n_true_clusters": 1500
+      }
+    },
+    "cascade": {
+      "union_find": {
+        "pairwise_precision": 0.9336574206462682,
+        "pairwise_recall": 0.9181664791901012,
+        "pairwise_f1": 0.9258471572380547,
+        "bcubed_precision": 0.9745796173156948,
+        "bcubed_recall": 0.9438073226208819,
+        "bcubed_f1": 0.9589466651915587,
+        "exact_cluster_rate": 0.8433333333333334,
+        "ari": 0.9257964338331492,
+        "n_pred_clusters": 1624,
+        "n_true_clusters": 1500
+      },
+      "average_link": {
+        "pairwise_precision": 0.9805056350898569,
+        "pairwise_recall": 0.9052305961754781,
+        "pairwise_f1": 0.9413656967392894,
+        "bcubed_precision": 0.9912100947209906,
+        "bcubed_recall": 0.9360371267150929,
+        "bcubed_f1": 0.9628338686536294,
+        "exact_cluster_rate": 0.8566666666666667,
+        "ari": 0.9413268656618885,
+        "n_pred_clusters": 1671,
+        "n_true_clusters": 1500
+      }
+    },
+    "cascade_raw": {
+      "union_find": {
+        "pairwise_precision": 0.8387590961317503,
+        "pairwise_recall": 0.9237907761529809,
+        "pairwise_f1": 0.8792238206758113,
+        "bcubed_precision": 0.9520974806967478,
+        "bcubed_recall": 0.9479916774105637,
+        "bcubed_f1": 0.9500401430458628,
+        "exact_cluster_rate": 0.8166666666666667,
+        "ari": 0.8791364854799697,
+        "n_pred_clusters": 1574,
+        "n_true_clusters": 1500
+      },
+      "average_link": {
+        "pairwise_precision": 0.9670855774985039,
+        "pairwise_recall": 0.9088863892013498,
+        "pairwise_f1": 0.9370832125253696,
+        "bcubed_precision": 0.9822168415388753,
+        "bcubed_recall": 0.936989402848967,
+        "bcubed_f1": 0.9590702140668164,
+        "exact_cluster_rate": 0.8406666666666667,
+        "ari": 0.9370411590538862,
+        "n_pred_clusters": 1643,
+        "n_true_clusters": 1500
+      }
+    }
+  },
+  "recall_by_noise": {
+    "suffix": {
+      "true_pairs": 4500,
+      "blocking": 0.9286666666666666,
+      "exact": 0.5384444444444444,
+      "tfidf_cosine": 0.7615555555555555,
+      "rapidfuzz_token_set": 0.7748888888888888,
+      "jaro_winkler": 0.864,
+      "gbm": 0.9051111111111111,
+      "cascade": 0.9006666666666666,
+      "cascade_raw": 0.91
+    },
+    "punctuation": {
+      "true_pairs": 3577,
+      "blocking": 0.9289907743919485,
+      "exact": 0.5314509365389991,
+      "tfidf_cosine": 0.7601341906625664,
+      "rapidfuzz_token_set": 0.7710371819960861,
+      "jaro_winkler": 0.8549063461000839,
+      "gbm": 0.8985183114341627,
+      "cascade": 0.8962818003913894,
+      "cascade_raw": 0.9055074084428292
+    },
+    "abbreviation": {
+      "true_pairs": 1472,
+      "blocking": 0.9313858695652174,
+      "exact": 0.3763586956521739,
+      "tfidf_cosine": 0.734375,
+      "rapidfuzz_token_set": 0.65625,
+      "jaro_winkler": 0.8525815217391305,
+      "gbm": 0.8953804347826086,
+      "cascade": 0.8933423913043478,
+      "cascade_raw": 0.9123641304347826
+    },
+    "typo": {
+      "true_pairs": 2187,
+      "blocking": 0.909007773205304,
+      "exact": 0.09510745313214448,
+      "tfidf_cosine": 0.46684956561499774,
+      "rapidfuzz_token_set": 0.5843621399176955,
+      "jaro_winkler": 0.797896662094193,
+      "gbm": 0.8655692729766804,
+      "cascade": 0.8568815729309557,
+      "cascade_raw": 0.8737997256515775
+    },
+    "card_descriptor": {
+      "true_pairs": 3116,
+      "blocking": 0.9476893453145058,
+      "exact": 0.4127086007702182,
+      "tfidf_cosine": 0.7609114249037228,
+      "rapidfuzz_token_set": 0.7159820282413351,
+      "jaro_winkler": 0.8735558408215661,
+      "gbm": 0.9120667522464698,
+      "cascade": 0.9082156611039794,
+      "cascade_raw": 0.918806161745828
+    },
+    "processor_prefix": {
+      "true_pairs": 1087,
+      "blocking": 0.9356025758969642,
+      "exact": 0.35418583256669733,
+      "tfidf_cosine": 0.7442502299908004,
+      "rapidfuzz_token_set": 0.6890524379024839,
+      "jaro_winkler": 0.8647654093836247,
+      "gbm": 0.8988040478380864,
+      "cascade": 0.8942042318307267,
+      "cascade_raw": 0.906163753449862
+    },
+    "store_number": {
+      "true_pairs": 769,
+      "blocking": 0.951885565669701,
+      "exact": 0.3107932379713914,
+      "tfidf_cosine": 0.7217165149544863,
+      "rapidfuzz_token_set": 0.6345903771131339,
+      "jaro_winkler": 0.8582574772431729,
+      "gbm": 0.9063719115734721,
+      "cascade": 0.9024707412223667,
+      "cascade_raw": 0.9128738621586476
+    },
+    "truncated": {
+      "true_pairs": 1334,
+      "blocking": 0.9572713643178411,
+      "exact": 0.24737631184407796,
+      "tfidf_cosine": 0.7698650674662668,
+      "rapidfuzz_token_set": 0.6581709145427287,
+      "jaro_winkler": 0.8823088455772113,
+      "gbm": 0.9227886056971514,
+      "cascade": 0.9190404797601199,
+      "cascade_raw": 0.9377811094452774
+    },
+    "charge_city": {
+      "true_pairs": 1704,
+      "blocking": 0.9501173708920188,
+      "exact": 0.4295774647887324,
+      "tfidf_cosine": 0.7617370892018779,
+      "rapidfuzz_token_set": 0.7247652582159625,
+      "jaro_winkler": 0.8908450704225352,
+      "gbm": 0.9113849765258216,
+      "cascade": 0.903755868544601,
+      "cascade_raw": 0.914906103286385
+    },
+    "attention_line": {
+      "true_pairs": 463,
+      "blocking": 0.9330453563714903,
+      "exact": 0.49676025917926564,
+      "tfidf_cosine": 0.7192224622030238,
+      "rapidfuzz_token_set": 0.7408207343412527,
+      "jaro_winkler": 0.8509719222462203,
+      "gbm": 0.896328293736501,
+      "cascade": 0.896328293736501,
+      "cascade_raw": 0.9136069114470843
+    },
+    "remit_address": {
+      "true_pairs": 1254,
+      "blocking": 0.9346092503987241,
+      "exact": 0.49122807017543857,
+      "tfidf_cosine": 0.726475279106858,
+      "rapidfuzz_token_set": 0.7615629984051037,
+      "jaro_winkler": 0.8644338118022329,
+      "gbm": 0.8939393939393939,
+      "cascade": 0.8859649122807017,
+      "cascade_raw": 0.9027113237639554
+    },
+    "dba": {
+      "true_pairs": 54,
+      "blocking": 1.0,
+      "exact": 0.5185185185185185,
+      "tfidf_cosine": 0.8148148148148148,
+      "rapidfuzz_token_set": 0.8888888888888888,
+      "jaro_winkler": 0.9259259259259259,
+      "gbm": 0.9814814814814815,
+      "cascade": 0.9629629629629629,
+      "cascade_raw": 0.9814814814814815
+    },
+    "alias": {
+      "true_pairs": 225,
+      "blocking": 0.6933333333333334,
+      "exact": 0.09333333333333334,
+      "tfidf_cosine": 0.36444444444444446,
+      "rapidfuzz_token_set": 0.4622222222222222,
+      "jaro_winkler": 0.29333333333333333,
+      "gbm": 0.5244444444444445,
+      "cascade": 0.5022222222222222,
+      "cascade_raw": 0.5511111111111111
+    },
+    "acronym": {
+      "true_pairs": 36,
+      "blocking": 0.8055555555555556,
+      "exact": 0.05555555555555555,
+      "tfidf_cosine": 0.05555555555555555,
+      "rapidfuzz_token_set": 0.05555555555555555,
+      "jaro_winkler": 0.05555555555555555,
+      "gbm": 0.75,
+      "cascade": 0.6944444444444444,
+      "cascade_raw": 0.6388888888888888
+    },
+    "former_name": {
+      "true_pairs": 579,
+      "blocking": 0.37132987910189985,
+      "exact": 0.04145077720207254,
+      "tfidf_cosine": 0.19170984455958548,
+      "rapidfuzz_token_set": 0.17271157167530224,
+      "jaro_winkler": 0.16234887737478412,
+      "gbm": 0.2469775474956822,
+      "cascade": 0.23488773747841105,
+      "cascade_raw": 0.27461139896373055
+    }
+  },
+  "hard_negatives": {
+    "pairs": 2034,
+    "exact": {
+      "false_match_rate": 0.0
+    },
+    "tfidf_cosine": {
+      "false_match_rate": 0.1096361848574238
+    },
+    "rapidfuzz_token_set": {
+      "false_match_rate": 0.176007866273353
+    },
+    "jaro_winkler": {
+      "false_match_rate": 0.10422812192723697
+    },
+    "gbm": {
+      "false_match_rate": 0.08308751229105212
+    },
+    "cascade": {
+      "false_match_rate": 0.058997050147492625
+    },
+    "cascade_raw": {
+      "false_match_rate": 0.06981317600786627
+    }
+  },
+  "examples": {
+    "jaro_winkler_false_match_gbm_right": [
+      {
+        "a": {
+          "source": "erp",
+          "name": "LENSAR INC",
+          "city": "ORLANDO",
+          "state": "FL"
+        },
+        "b": {
+          "source": "card",
+          "name": "SQ *LENNAR",
+          "city": "GREENWICH",
+          "state": "CT"
+        },
+        "same_company": false,
+        "gbm": 0.052,
+        "jaro_winkler": 0.922,
+        "llm_p": 0.0,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "punctuation"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "LENSAR INC",
+          "city": "ORLANDO",
+          "state": "FL"
+        },
+        "b": {
+          "source": "card",
+          "name": "PAYPAL *LENNAR",
+          "city": "MIAMI",
+          "state": "FL"
+        },
+        "same_company": false,
+        "gbm": 0.084,
+        "jaro_winkler": 0.922,
+        "llm_p": 0.0,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "processor_prefix",
+          "punctuation"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "BLUEPORT ACQUISITION",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Bluerock Acquisition Corp",
+          "city": "Southfield",
+          "state": "MI"
+        },
+        "same_company": false,
+        "gbm": 0.014,
+        "jaro_winkler": 0.916,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "punctuation"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "AMERICAN RESOURCES",
+          "city": "FISHERS",
+          "state": "IN"
+        },
+        "b": {
+          "source": "card",
+          "name": "AMERICAN EX STORE 9452",
+          "city": "HOUSTON",
+          "state": "TX"
+        },
+        "same_company": false,
+        "gbm": 0.063,
+        "jaro_winkler": 0.902,
+        "llm_p": 0.0,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "store_number",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "TST* REPLIMUNE GROUP",
+          "city": "WOBURN",
+          "state": "MA"
+        },
+        "b": {
+          "source": "card",
+          "name": "PAYPAL *REPLIGEN CORP",
+          "city": "WALTHAM",
+          "state": "MA"
+        },
+        "same_company": false,
+        "gbm": 0.003,
+        "jaro_winkler": 0.898,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "processor_prefix"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "AVNET",
+          "city": "Tempe",
+          "state": "AZ"
+        },
+        "b": {
+          "source": "card",
+          "name": "PAYPAL *AVIENT",
+          "city": "ARMONK",
+          "state": "NY"
+        },
+        "same_company": false,
+        "gbm": 0.002,
+        "jaro_winkler": 0.902,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "TransMedics Grp",
+          "city": "ANDOVER",
+          "state": "MA"
+        },
+        "b": {
+          "source": "card",
+          "name": "TRANSDIGM GROUP #8518",
+          "city": "CLEVELAND",
+          "state": "OH"
+        },
+        "same_company": false,
+        "gbm": 0.002,
+        "jaro_winkler": 0.911,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "card_descriptor",
+          "store_number",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "BLUPORT ACQUISITION LIMITED",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Bluerock Acquisition Corp",
+          "city": "Southfield",
+          "state": "MI"
+        },
+        "same_company": false,
+        "gbm": 0.155,
+        "jaro_winkler": 0.913,
+        "llm_p": 0.0,
+        "reason": "",
+        "noise": [
+          "punctuation",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "REPLIGEN CORP",
+          "city": "Charlotte",
+          "state": "NC"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Replimune Group",
+          "city": "WOBURN",
+          "state": "MA"
+        },
+        "same_company": false,
+        "gbm": 0.001,
+        "jaro_winkler": 0.898,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "remit_address",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "TransMedics Group",
+          "city": "ANDOVER",
+          "state": ""
+        },
+        "b": {
+          "source": "erp",
+          "name": "Transdigm Group Inc",
+          "city": "CLEVELAND",
+          "state": "OH"
+        },
+        "same_company": false,
+        "gbm": 0.001,
+        "jaro_winkler": 0.911,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "GEO GROUP",
+          "city": "BOCA RATON",
+          "state": "FL"
+        },
+        "b": {
+          "source": "ap",
+          "name": "GEE Group Corporation Attn: Accounts Receivable",
+          "city": "CHICAGO",
+          "state": "IL"
+        },
+        "same_company": false,
+        "gbm": 0.002,
+        "jaro_winkler": 0.924,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "attention_line",
+          "card_descriptor",
+          "punctuation",
+          "remit_address",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "FIRST INTERNET B #4301",
+          "city": "FISHERS",
+          "state": "IN"
+        },
+        "b": {
+          "source": "ap",
+          "name": "FIRST WESTERN FINL INC",
+          "city": "DALLAS",
+          "state": "TX"
+        },
+        "same_company": false,
+        "gbm": 0.012,
+        "jaro_winkler": 0.9,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "card_descriptor",
+          "punctuation",
+          "remit_address",
+          "store_number"
+        ]
+      }
+    ],
+    "jaro_winkler_missed_gbm_right": [
+      {
+        "a": {
+          "source": "ap",
+          "name": "HALOZYME THREAPEUTICS Incorporsated",
+          "city": "San Diego",
+          "state": "CA"
+        },
+        "b": {
+          "source": "ap",
+          "name": "Hzalozyme Thera Incorporated",
+          "city": "SAN DIEGO",
+          "state": "CA"
+        },
+        "same_company": true,
+        "gbm": 0.971,
+        "jaro_winkler": 0.816,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "punctuation",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "SOUTHERN MISSOURI BANCORP, INC.",
+          "city": "POPLAR BLUFF",
+          "state": "MO"
+        },
+        "b": {
+          "source": "crm",
+          "name": "So Missouri Bancorp",
+          "city": "Poplar Bluff",
+          "state": "MO"
+        },
+        "same_company": true,
+        "gbm": 0.928,
+        "jaro_winkler": 0.824,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "punctuation",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "i80 Gold Corp",
+          "city": "Toronto",
+          "state": ""
+        },
+        "b": {
+          "source": "card",
+          "name": "PAYPAL *I 80 OLD",
+          "city": "TORONTO",
+          "state": ""
+        },
+        "same_company": true,
+        "gbm": 0.886,
+        "jaro_winkler": 0.882,
+        "llm_p": 1.0,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "processor_prefix",
+          "punctuation",
+          "truncated",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "WHERE FOOD COMES FROM, INC.",
+          "city": "CASTLE ROCK",
+          "state": "CO"
+        },
+        "b": {
+          "source": "card",
+          "name": "PAYPAL *WHERE FOOD COM",
+          "city": "CAMBRIDGE",
+          "state": "MA"
+        },
+        "same_company": true,
+        "gbm": 0.982,
+        "jaro_winkler": 0.895,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Prairie Operating C.",
+          "city": "BOSTON",
+          "state": "MA"
+        },
+        "b": {
+          "source": "card",
+          "name": "PRAITRIE OP STORE 8475",
+          "city": "HOUSTON",
+          "state": "TX"
+        },
+        "same_company": true,
+        "gbm": 0.896,
+        "jaro_winkler": 0.887,
+        "llm_p": 0.0,
+        "reason": "Names differ significantly and locations are different cities.",
+        "noise": [
+          "card_descriptor",
+          "remit_address",
+          "store_number",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "SIM Acquisition Corp I",
+          "city": "Miami",
+          "state": ""
+        },
+        "b": {
+          "source": "erp",
+          "name": "Sim Acq Corp. I",
+          "city": "Miami",
+          "state": "FL"
+        },
+        "same_company": true,
+        "gbm": 0.973,
+        "jaro_winkler": 0.884,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "punctuation"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "CNR INC",
+          "city": "CANONSBURG",
+          "state": "PA"
+        },
+        "b": {
+          "source": "ap",
+          "name": "Core Natural Resources Corp",
+          "city": "BOSTON",
+          "state": "MA"
+        },
+        "same_company": true,
+        "gbm": 0.397,
+        "jaro_winkler": 0.614,
+        "llm_p": 0.076,
+        "reason": "",
+        "noise": [
+          "acronym",
+          "punctuation",
+          "remit_address",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "J.B. HUNT",
+          "city": "LOWELL",
+          "state": ""
+        },
+        "b": {
+          "source": "card",
+          "name": "HUNT J B TRANSPORT 176",
+          "city": "LOWELL",
+          "state": "AR"
+        },
+        "same_company": true,
+        "gbm": 0.466,
+        "jaro_winkler": 0.661,
+        "llm_p": 1.0,
+        "reason": "",
+        "noise": [
+          "alias",
+          "card_descriptor",
+          "store_number"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "TRIOTECH INTERNA #8538",
+          "city": "VAN NUYS",
+          "state": "CA"
+        },
+        "b": {
+          "source": "erp",
+          "name": "TRIO-TECH INTL",
+          "city": "VAN NUYS",
+          "state": "CA"
+        },
+        "same_company": true,
+        "gbm": 0.713,
+        "jaro_winkler": 0.888,
+        "llm_p": 1.0,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "card_descriptor",
+          "store_number"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Core Natural Resources ATTN AR DEPT",
+          "city": "CANONSBURG",
+          "state": "PA"
+        },
+        "b": {
+          "source": "crm",
+          "name": "CNR",
+          "city": "",
+          "state": "PA"
+        },
+        "same_company": true,
+        "gbm": 0.931,
+        "jaro_winkler": 0.614,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "acronym",
+          "attention_line",
+          "punctuation",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "KENSINGTON CAPITAL ACQ",
+          "city": "WESTBURY",
+          "state": "NY"
+        },
+        "b": {
+          "source": "ap",
+          "name": "Kensington Cap Acquisition Corp VI Attn Billing",
+          "city": "Westbury",
+          "state": "NY"
+        },
+        "same_company": true,
+        "gbm": 0.373,
+        "jaro_winkler": 0.87,
+        "llm_p": 1.0,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "attention_line",
+          "card_descriptor",
+          "punctuation",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "STELLAR V CAPITAL 7076",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "b": {
+          "source": "ap",
+          "name": "Stellar V Capital Corp (Cayman Islands)",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "same_company": true,
+        "gbm": 0.984,
+        "jaro_winkler": 0.892,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "punctuation",
+          "store_number"
+        ]
+      }
+    ],
+    "gbm_confident_false_match": [
+      {
+        "a": {
+          "source": "erp",
+          "name": "Liberty Engy INC",
+          "city": "DENVER",
+          "state": "CO"
+        },
+        "b": {
+          "source": "crm",
+          "name": "Liberty Latin Amer Ltd.",
+          "city": "DENVER",
+          "state": ""
+        },
+        "same_company": false,
+        "gbm": 0.953,
+        "jaro_winkler": 0.858,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "punctuation",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "WESTLAKE Corp",
+          "city": "HOUSTON",
+          "state": "TX"
+        },
+        "b": {
+          "source": "card",
+          "name": "PAYPAL *WESTLAKE CHEMI",
+          "city": "HOUSTON",
+          "state": "TX"
+        },
+        "same_company": false,
+        "gbm": 0.998,
+        "jaro_winkler": 0.914,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "processor_prefix",
+          "suffix",
+          "truncated",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "OT ACQUISITION CORP I",
+          "city": "PALM BEACH GA",
+          "state": "FL"
+        },
+        "b": {
+          "source": "erp",
+          "name": "PALOMA ACQUISITION CORP I",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "same_company": false,
+        "gbm": 0.905,
+        "jaro_winkler": 0.901,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "punctuation",
+          "truncated",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "Grayscale Litecoin Trust (ltc)",
+          "city": "STAMFORD",
+          "state": "CT"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Grayscale Dogecoin Tr ETF",
+          "city": "STAMFORD",
+          "state": "CT"
+        },
+        "same_company": false,
+        "gbm": 0.98,
+        "jaro_winkler": 0.868,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "punctuation"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "Rithm Acquisition Corporation",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "b": {
+          "source": "crm",
+          "name": "RITHM ACL CORP",
+          "city": "New York",
+          "state": "NY"
+        },
+        "same_company": false,
+        "gbm": 0.996,
+        "jaro_winkler": 0.872,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "Eagle Bancorp Inc",
+          "city": "Bethesda",
+          "state": "MD"
+        },
+        "b": {
+          "source": "ap",
+          "name": "Eagle Bancorp Montana",
+          "city": "Los Angeles",
+          "state": "CA"
+        },
+        "same_company": false,
+        "gbm": 0.962,
+        "jaro_winkler": 0.924,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "remit_address",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "Eagle Bancorp Inc",
+          "city": "Bethesda",
+          "state": "MD"
+        },
+        "b": {
+          "source": "card",
+          "name": "EAGLE BANCORP MONYANA",
+          "city": "HELENA",
+          "state": "MT"
+        },
+        "same_company": false,
+        "gbm": 0.99,
+        "jaro_winkler": 0.924,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "truncated",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "EAGLE BANCORP INCORPOR",
+          "city": "BRISBANE",
+          "state": "CA"
+        },
+        "b": {
+          "source": "ap",
+          "name": "Eagle Bancorp Montana",
+          "city": "Los Angeles",
+          "state": "CA"
+        },
+        "same_company": false,
+        "gbm": 0.979,
+        "jaro_winkler": 0.924,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "remit_address",
+          "suffix",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "EAGLE BANCORP INCORPOR",
+          "city": "BRISBANE",
+          "state": "CA"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Eagle Bancorp Montana",
+          "city": "HELENA",
+          "state": "MT"
+        },
+        "same_company": false,
+        "gbm": 0.974,
+        "jaro_winkler": 0.924,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "suffix",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Eagle Bancorp Montana",
+          "city": "Los Angeles",
+          "state": "CA"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Eagle Bancorp Inc",
+          "city": "BETHESDA",
+          "state": "MD"
+        },
+        "same_company": false,
+        "gbm": 0.962,
+        "jaro_winkler": 0.924,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "remit_address",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "KAIOS PHARMA",
+          "city": "TEMPE",
+          "state": "AZ"
+        },
+        "b": {
+          "source": "ap",
+          "name": "AGIOS PHARMACEUTICALS, Inc.",
+          "city": "LOS ANGELES",
+          "state": "CA"
+        },
+        "same_company": false,
+        "gbm": 0.995,
+        "jaro_winkler": 0.944,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "remit_address",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "Eagle Bancorp Montana, Inc.",
+          "city": "HELENA",
+          "state": "MT"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Eagle Bancorp Inc",
+          "city": "BETHESDA",
+          "state": "MD"
+        },
+        "same_company": false,
+        "gbm": 0.966,
+        "jaro_winkler": 0.924,
+        "llm_p": null,
+        "reason": "",
+        "noise": []
+      }
+    ],
+    "gbm_confident_miss": [
+      {
+        "a": {
+          "source": "card",
+          "name": "IN *CAPITAL SENIOR LIV",
+          "city": "DALLAS",
+          "state": "TX"
+        },
+        "b": {
+          "source": "ap",
+          "name": "Sonida Senior Living Inc",
+          "city": "Dallas",
+          "state": "TX"
+        },
+        "same_company": true,
+        "gbm": 0.005,
+        "jaro_winkler": 0.662,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "alias",
+          "card_descriptor",
+          "processor_prefix",
+          "punctuation",
+          "suffix",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "SP * TROOPS INC /CAYMA",
+          "city": "THOUSAND OAKS",
+          "state": "CA"
+        },
+        "b": {
+          "source": "erp",
+          "name": "TROOPS, INC. /CAYMAN ISLANDS/",
+          "city": "NEW TERRITORIES HONG KONG",
+          "state": ""
+        },
+        "same_company": true,
+        "gbm": 0.02,
+        "jaro_winkler": 0.848,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "JB Hunt",
+          "city": "",
+          "state": "AR"
+        },
+        "b": {
+          "source": "ap",
+          "name": "HUNT J B TRANSPORT SERVICES INC",
+          "city": "Atlanta",
+          "state": "GA"
+        },
+        "same_company": true,
+        "gbm": 0.011,
+        "jaro_winkler": 0.635,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "alias",
+          "punctuation",
+          "remit_address"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "JB Hunt",
+          "city": "",
+          "state": "AR"
+        },
+        "b": {
+          "source": "card",
+          "name": "HUNT J B TRANSPORT SER",
+          "city": "THESSALONIKI",
+          "state": "J3"
+        },
+        "same_company": true,
+        "gbm": 0.002,
+        "jaro_winkler": 0.635,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "alias",
+          "card_descriptor",
+          "charge_city",
+          "punctuation",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "SC POOL",
+          "city": "COVINGTON",
+          "state": ""
+        },
+        "b": {
+          "source": "crm",
+          "name": "POOL ORP",
+          "city": "",
+          "state": "LA"
+        },
+        "same_company": true,
+        "gbm": 0.017,
+        "jaro_winkler": 0.464,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "former_name",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "EPR PROPERTIES",
+          "city": "KANSAS CITY",
+          "state": "MO"
+        },
+        "b": {
+          "source": "crm",
+          "name": "ENTERTAINMENT PROPERTIES TRUST CO",
+          "city": "KANSAS CITY",
+          "state": "MO"
+        },
+        "same_company": true,
+        "gbm": 0.003,
+        "jaro_winkler": 0.649,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "former_name",
+          "punctuation",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "B&G FOODS LLC",
+          "city": "PARSIPPANY",
+          "state": "NJ"
+        },
+        "b": {
+          "source": "card",
+          "name": "BANDG FIOODS #6079",
+          "city": "AUSTIN",
+          "state": "TX"
+        },
+        "same_company": true,
+        "gbm": 0.001,
+        "jaro_winkler": 0.781,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "store_number",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "CAPITAL SENIOR LIVING",
+          "city": "DALLAS",
+          "state": "TX"
+        },
+        "b": {
+          "source": "crm",
+          "name": "Sonida Senior Living Inc",
+          "city": "DALLAS",
+          "state": "TX"
+        },
+        "same_company": true,
+        "gbm": 0.019,
+        "jaro_winkler": 0.75,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "alias",
+          "card_descriptor",
+          "punctuation",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Icanic Brands Co Inc. C/O Lockbox Services",
+          "city": "VANCOUVER",
+          "state": ""
+        },
+        "b": {
+          "source": "card",
+          "name": "LEEF BRANDS",
+          "city": "VANCOUVER",
+          "state": ""
+        },
+        "same_company": true,
+        "gbm": 0.01,
+        "jaro_winkler": 0.63,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "attention_line",
+          "card_descriptor",
+          "former_name"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "Host Marriott Cor",
+          "city": "BETHESDA",
+          "state": "MD"
+        },
+        "b": {
+          "source": "erp",
+          "name": "HOST HOTELS & RESORTS INC",
+          "city": "BETHESDA",
+          "state": "MD"
+        },
+        "same_company": true,
+        "gbm": 0.009,
+        "jaro_winkler": 0.67,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "alias",
+          "punctuation",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "BITCOIN CASH INVESTMENT TRUST",
+          "city": "",
+          "state": ""
+        },
+        "b": {
+          "source": "crm",
+          "name": "GRAYSCALE BITCOIN CASH TR (BCH)",
+          "city": "STAMFORD",
+          "state": "CT"
+        },
+        "same_company": true,
+        "gbm": 0.001,
+        "jaro_winkler": 0.651,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "abbreviation",
+          "former_name",
+          "punctuation"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "LuceMD Inc.",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "b": {
+          "source": "ap",
+          "name": "LifreMD Incorporated",
+          "city": "Chicago",
+          "state": "IL"
+        },
+        "same_company": true,
+        "gbm": 0.001,
+        "jaro_winkler": 0.771,
+        "llm_p": null,
+        "reason": "",
+        "noise": [
+          "punctuation",
+          "remit_address",
+          "suffix",
+          "typo"
+        ]
+      }
+    ],
+    "counts": {
+      "band_llm_fixed": 213,
+      "band_llm_broke": 131,
+      "band_both_wrong": 86,
+      "gbm_confident_errors": 167
+    },
+    "llm_fixed": [
+      {
+        "a": {
+          "source": "card",
+          "name": "SQ *PNC FINANCIAL SERV",
+          "city": "AUSTIN",
+          "state": "TX"
+        },
+        "b": {
+          "source": "crm",
+          "name": "Pnc Corp",
+          "city": "PITTSBURGH",
+          "state": ""
+        },
+        "same_company": true,
+        "gbm": 0.067,
+        "jaro_winkler": 0.825,
+        "llm_p": 1.0,
+        "reason": "Same company with different name format and city.",
+        "noise": [
+          "alias",
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "punctuation",
+          "suffix",
+          "truncated",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "HCM III ACQUISITION Corp.",
+          "city": "STAMFORD",
+          "state": "CT"
+        },
+        "b": {
+          "source": "card",
+          "name": "HCM IV ACQU STORE 5510",
+          "city": "STAMFORD",
+          "state": "CT"
+        },
+        "same_company": false,
+        "gbm": 0.42,
+        "jaro_winkler": 0.887,
+        "llm_p": 0.0,
+        "reason": "Different numbers (III vs IV) indicate distinct entities.",
+        "noise": [
+          "card_descriptor",
+          "store_number",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "Grayscale Litecoin Trust (LTC)",
+          "city": "STAMFORD",
+          "state": "CT"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Grayscale Horizen Trust (ZEN)",
+          "city": "STAMFORD",
+          "state": "CT"
+        },
+        "same_company": false,
+        "gbm": 0.599,
+        "jaro_winkler": 0.885,
+        "llm_p": 0.0,
+        "reason": "Different cryptocurrency names (LTC vs ZEN) indicate distinct trusts.",
+        "noise": [
+          "punctuation"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "IN *UNITED CONTINENTAL",
+          "city": "WILMINGTON",
+          "state": "DE"
+        },
+        "b": {
+          "source": "ap",
+          "name": "UNITED THERAPEUTICS, Corp.",
+          "city": "SILVER SPRING",
+          "state": "MD"
+        },
+        "same_company": false,
+        "gbm": 0.446,
+        "jaro_winkler": 0.878,
+        "llm_p": 0.0,
+        "reason": "Different names and locations indicate separate companies.",
+        "noise": [
+          "alias",
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "suffix",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "Grayscale Litecoin Trust (ltc)",
+          "city": "STAMFORD",
+          "state": "CT"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Grayscale Horizen Trust (ZEN)",
+          "city": "STAMFORD",
+          "state": "CT"
+        },
+        "same_company": false,
+        "gbm": 0.599,
+        "jaro_winkler": 0.885,
+        "llm_p": 0.0,
+        "reason": "Different cryptocurrency names (Litecoin vs Horizen) indicate distinct entities.",
+        "noise": [
+          "punctuation"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "PS",
+          "city": "New York",
+          "state": "NY"
+        },
+        "b": {
+          "source": "ap",
+          "name": "PERSHING SQUARE INCORPOFRATED",
+          "city": "NEWARK",
+          "state": "NJ"
+        },
+        "same_company": true,
+        "gbm": 0.03,
+        "jaro_winkler": 0.74,
+        "llm_p": 1.0,
+        "reason": "PS is likely an abbreviation of Pershing Square, matching the name and location.",
+        "noise": [
+          "acronym",
+          "remit_address",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "PRESTIGE CONSUME #2028",
+          "city": "TARRYTOWN",
+          "state": "NY"
+        },
+        "b": {
+          "source": "ap",
+          "name": "Prestige Brands Hldgs Inc",
+          "city": "TARRYTOWN",
+          "state": "NY"
+        },
+        "same_company": true,
+        "gbm": 0.07,
+        "jaro_winkler": 0.848,
+        "llm_p": 1.0,
+        "reason": "Same company with name variation and different address details.",
+        "noise": [
+          "abbreviation",
+          "card_descriptor",
+          "former_name",
+          "punctuation",
+          "store_number"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "ESSENTIAL UT STORE 881",
+          "city": "MINNEAPOLIS",
+          "state": "MN"
+        },
+        "b": {
+          "source": "card",
+          "name": "SP * ESSENTIAL PROPERT",
+          "city": "AUSTIN",
+          "state": "TX"
+        },
+        "same_company": false,
+        "gbm": 0.743,
+        "jaro_winkler": 0.913,
+        "llm_p": 0.0,
+        "reason": "Different names and cities suggest separate entities.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "store_number",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "UNE HOLDINGS INC",
+          "city": "",
+          "state": ""
+        },
+        "b": {
+          "source": "card",
+          "name": "VENU HOLDING CORP",
+          "city": "REDWOOD CITY",
+          "state": "CA"
+        },
+        "same_company": false,
+        "gbm": 0.78,
+        "jaro_winkler": 0.921,
+        "llm_p": 0.0,
+        "reason": "UNE vs VENU are different names with no clear connection.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "former_name",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "SP * SIMON PROLERTY GR",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "b": {
+          "source": "erp",
+          "name": "SIMON PROPERTY GROUP Inc.",
+          "city": "INDIANAPOLIS",
+          "state": "IN"
+        },
+        "same_company": true,
+        "gbm": 0.239,
+        "jaro_winkler": 0.896,
+        "llm_p": 1.0,
+        "reason": "Brand name variation with typos and different city/state due to transaction location.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "suffix",
+          "truncated",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "PINNACLE AC STORE 7086",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "b": {
+          "source": "card",
+          "name": "PINNACLE WEST CAPITAL",
+          "city": "PHOENIX",
+          "state": "AZ"
+        },
+        "same_company": false,
+        "gbm": 0.425,
+        "jaro_winkler": 0.887,
+        "llm_p": 0.0,
+        "reason": "Different names and locations indicate separate companies.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "store_number",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "SOREN ACQUISITION CORP.",
+          "city": "",
+          "state": "FL"
+        },
+        "b": {
+          "source": "card",
+          "name": "ARES ACQUISITION COPR",
+          "city": "WANCHAI",
+          "state": "K3"
+        },
+        "same_company": false,
+        "gbm": 0.523,
+        "jaro_winkler": 0.918,
+        "llm_p": 0.0,
+        "reason": "Different names with typos and swapped letters, different state codes.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "truncated",
+          "typo"
+        ]
+      }
+    ],
+    "llm_broke": [
+      {
+        "a": {
+          "source": "ap",
+          "name": "Senti Biosciences Holdings, Inc.",
+          "city": "SOUTH SAN FRANCISCO",
+          "state": "CA"
+        },
+        "b": {
+          "source": "card",
+          "name": "SP * YETI HOLDINGS INC",
+          "city": "LIBERTY LAKE",
+          "state": "WA"
+        },
+        "same_company": false,
+        "gbm": 0.153,
+        "jaro_winkler": 0.82,
+        "llm_p": 1.0,
+        "reason": "Same company with different name format and location.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Prairie Operating C.",
+          "city": "BOSTON",
+          "state": "MA"
+        },
+        "b": {
+          "source": "card",
+          "name": "PRAITRIE OP STORE 8475",
+          "city": "HOUSTON",
+          "state": "TX"
+        },
+        "same_company": true,
+        "gbm": 0.896,
+        "jaro_winkler": 0.887,
+        "llm_p": 0.0,
+        "reason": "Names differ significantly and locations are different cities.",
+        "noise": [
+          "card_descriptor",
+          "remit_address",
+          "store_number",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "United Dominion Residential Communities",
+          "city": "",
+          "state": ""
+        },
+        "b": {
+          "source": "crm",
+          "name": "UNITED DOMINION REALTY TRUST Inc.",
+          "city": "",
+          "state": "CO"
+        },
+        "same_company": true,
+        "gbm": 0.494,
+        "jaro_winkler": 0.883,
+        "llm_p": 0.076,
+        "reason": "Different distinctive words 'Residential Communities' vs 'Realty Trust Inc.'",
+        "noise": [
+          "alias",
+          "former_name",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "ARK 21SHARES BITCOIN ETF LLC",
+          "city": "New York",
+          "state": "NY"
+        },
+        "b": {
+          "source": "ap",
+          "name": "21shares Dogecoin Etf Copr",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "same_company": false,
+        "gbm": 0.099,
+        "jaro_winkler": 0.682,
+        "llm_p": 0.881,
+        "reason": "Similar name with typos and different legal suffix, same city and state.",
+        "noise": [
+          "punctuation",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "GRAIK",
+          "city": "NEW YORK",
+          "state": "NY"
+        },
+        "b": {
+          "source": "card",
+          "name": "GRAIL 4760",
+          "city": "PRINCETON",
+          "state": "NJ"
+        },
+        "same_company": true,
+        "gbm": 0.534,
+        "jaro_winkler": 0.92,
+        "llm_p": 0.0,
+        "reason": "Different names and locations indicate separate companies.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "store_number",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "TARGT Cor",
+          "city": "Minneapolis",
+          "state": "MN"
+        },
+        "b": {
+          "source": "ap",
+          "name": "TARGET GROUP",
+          "city": "BOSTON",
+          "state": "MA"
+        },
+        "same_company": false,
+        "gbm": 0.303,
+        "jaro_winkler": 0.9,
+        "llm_p": 1.0,
+        "reason": "Name variation with typos and different address common for same company.",
+        "noise": [
+          "punctuation",
+          "remit_address",
+          "suffix",
+          "truncated",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "Silicon Valley Acquisition",
+          "city": "PALO ALTO",
+          "state": "CA"
+        },
+        "b": {
+          "source": "crm",
+          "name": "Rodgers Silicon Valley Acquiition",
+          "city": "",
+          "state": "CA"
+        },
+        "same_company": false,
+        "gbm": 0.095,
+        "jaro_winkler": 0.775,
+        "llm_p": 0.881,
+        "reason": "Name has minor typo and includes 'Silicon Valley Acquisition'",
+        "noise": [
+          "former_name",
+          "punctuation",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "ELINE ENTRE STORE 4019",
+          "city": "ADMIRALTY",
+          "state": "K3"
+        },
+        "b": {
+          "source": "card",
+          "name": "SQ *ELIMNE ENTERTAINME",
+          "city": "SOUTH SAN FRA",
+          "state": "CA"
+        },
+        "same_company": true,
+        "gbm": 0.881,
+        "jaro_winkler": 0.888,
+        "llm_p": 0.148,
+        "reason": "Names have different distinctive words and locations.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "processor_prefix",
+          "store_number",
+          "truncated",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "Shoe Station Group",
+          "city": "FORT MILL",
+          "state": "SC"
+        },
+        "b": {
+          "source": "card",
+          "name": "SQ *SHOE CARNIVAL",
+          "city": "FORT MILL",
+          "state": "SC"
+        },
+        "same_company": true,
+        "gbm": 0.794,
+        "jaro_winkler": 0.829,
+        "llm_p": 0.011,
+        "reason": "Different names with distinct brand identifiers (Shoe Station Group vs SQ *SHOE CARNIVAL).",
+        "noise": [
+          "alias",
+          "card_descriptor",
+          "processor_prefix",
+          "punctuation",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Constructin Ptnrs C/O Lockbox Services",
+          "city": "Philadelphia",
+          "state": "PA"
+        },
+        "b": {
+          "source": "card",
+          "name": "CONSTRUCTIN STORE 1200",
+          "city": "DOTHAN",
+          "state": "AL"
+        },
+        "same_company": true,
+        "gbm": 0.838,
+        "jaro_winkler": 0.938,
+        "llm_p": 0.0,
+        "reason": "Different names and locations indicate separate entities.",
+        "noise": [
+          "abbreviation",
+          "attention_line",
+          "card_descriptor",
+          "punctuation",
+          "remit_address",
+          "store_number",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "Marwynn Hldgs Inc.",
+          "city": "IRVINE",
+          "state": "CA"
+        },
+        "b": {
+          "source": "ap",
+          "name": "MARA Holdings Inc DBA Marathon Digital Holdings",
+          "city": "HALLANDALE BEACH",
+          "state": "FL"
+        },
+        "same_company": false,
+        "gbm": 0.032,
+        "jaro_winkler": 0.896,
+        "llm_p": 0.999,
+        "reason": "DBA indicates same legal entity with different name and address.",
+        "noise": [
+          "abbreviation",
+          "dba",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Blue Water Acquisition Corp III",
+          "city": "DALLAS",
+          "state": "TX"
+        },
+        "b": {
+          "source": "card",
+          "name": "BLUE ACQUISITION",
+          "city": "BOSTON",
+          "state": "MA"
+        },
+        "same_company": false,
+        "gbm": 0.183,
+        "jaro_winkler": 0.866,
+        "llm_p": 0.905,
+        "reason": "Same core name with typos and missing suffix, different cities due to transaction locations.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "punctuation",
+          "remit_address"
+        ]
+      }
+    ],
+    "both_wrong": [
+      {
+        "a": {
+          "source": "ap",
+          "name": "HMS INCOME FUND LLC",
+          "city": "Houston",
+          "state": "TX"
+        },
+        "b": {
+          "source": "ap",
+          "name": "Msc Income Fund Inc",
+          "city": "ATLANTA",
+          "state": "GA"
+        },
+        "same_company": true,
+        "gbm": 0.028,
+        "jaro_winkler": 0.908,
+        "llm_p": 0.0,
+        "reason": "Different names and addresses indicate separate companies.",
+        "noise": [
+          "former_name",
+          "punctuation",
+          "remit_address",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "EAGLE BANCORP MONTANA, INC.",
+          "city": "HELENA",
+          "state": "MT"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Eagle Bancorp Inc",
+          "city": "BETHESDA",
+          "state": "MD"
+        },
+        "same_company": false,
+        "gbm": 0.885,
+        "jaro_winkler": 0.924,
+        "llm_p": 1.0,
+        "reason": "Same company with name variation and different addresses.",
+        "noise": []
+      },
+      {
+        "a": {
+          "source": "card",
+          "name": "PAYPAL *POOL",
+          "city": "COVINGTON",
+          "state": "LA"
+        },
+        "b": {
+          "source": "crm",
+          "name": "SC POOL",
+          "city": "COVINGTON",
+          "state": ""
+        },
+        "same_company": true,
+        "gbm": 0.161,
+        "jaro_winkler": 0.464,
+        "llm_p": 0.004,
+        "reason": "Different names: 'PAYPAL *POOL' vs 'SC POOL'",
+        "noise": [
+          "card_descriptor",
+          "former_name",
+          "processor_prefix",
+          "suffix",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "WESTLAKE Corp",
+          "city": "HOUSTON",
+          "state": "TX"
+        },
+        "b": {
+          "source": "erp",
+          "name": "Westlake Chemical Partners Lp",
+          "city": "Houston",
+          "state": "TX"
+        },
+        "same_company": false,
+        "gbm": 0.851,
+        "jaro_winkler": 0.873,
+        "llm_p": 1.0,
+        "reason": "Same company with variation in name and address details.",
+        "noise": [
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "crm",
+          "name": "CAPITAL SOUTHWEST",
+          "city": "",
+          "state": "TX"
+        },
+        "b": {
+          "source": "card",
+          "name": "SOUTHWEST",
+          "city": "DALLAS",
+          "state": "TX"
+        },
+        "same_company": false,
+        "gbm": 0.688,
+        "jaro_winkler": 0.503,
+        "llm_p": 1.0,
+        "reason": "Same company, 'SOUTHWEST' is likely a brand or division of 'CAPITAL SOUTHWEST'.",
+        "noise": [
+          "alias",
+          "card_descriptor",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Eagle Bajcorp Montansa, Inc.",
+          "city": "CHICAGO",
+          "state": "IL"
+        },
+        "b": {
+          "source": "card",
+          "name": "EAGLE BANCORP INCORPOR",
+          "city": "BRISBANE",
+          "state": "CA"
+        },
+        "same_company": false,
+        "gbm": 0.773,
+        "jaro_winkler": 0.887,
+        "llm_p": 1.0,
+        "reason": "Similar name with typos and different legal suffix, same legal entity likely.",
+        "noise": [
+          "card_descriptor",
+          "charge_city",
+          "remit_address",
+          "truncated",
+          "typo"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Marwynn Hldgs",
+          "city": "ATLANTA",
+          "state": "GA"
+        },
+        "b": {
+          "source": "ap",
+          "name": "MARA Holdings Inc DBA Marathon Digital Holdings",
+          "city": "HALLANDALE BEACH",
+          "state": "FL"
+        },
+        "same_company": false,
+        "gbm": 0.317,
+        "jaro_winkler": 0.896,
+        "llm_p": 0.905,
+        "reason": "DBA indicates same legal entity with different name and address.",
+        "noise": [
+          "abbreviation",
+          "dba",
+          "punctuation",
+          "remit_address",
+          "suffix"
+        ]
+      },
+      {
+        "a": {
+          "source": "ap",
+          "name": "Kalaris Therapeutics Inc",
+          "city": "BERKELEY HEIGHTS",
+          "state": "NJ"
+        },
+        "b": {
+          "source": "crm",
+          "name": "Kailera Therapeutics, Inc.",
+          "city": "WALTHAM",
+          "state": "MA"
+        },
+        "same_company": false,
+        "gbm": 0.559,
+        "jaro_winkler": 0.937,
+        "llm_p": 0.997,
+        "reason": "Names are similar with possible typos and same legal suffix.",
+        "noise": [
+          "punctuation",
+          "truncated"
+        ]
+      },
+      {
+        "a": {
+          "source": "erp",
+          "name": "WESTLKSAE CORP",
+          "city": "HOUSTON",
+          "state": "TX"
+        },
+        "b": {
+          "source": "card",
+          "name": "PAYPAL *WESTLAKE CHEMI",
+          "city": "HOUSTON",
+          "state": "TX"
+        },
+        "same_company": false,
+        "gbm": 0.608,
+        "jaro_winkler": 0.867,
+        "llm_p": 1.0,
+        "reason": "Name is a variation with typos and card processor tag.",
+        "noise": [
+          "card_descriptor",
+          "processor_prefix",
+          "punctuation",
+          "truncated",
+          "typo"
+        ]
+      }
+    ]
+  },
+  "prompt_dev": {
+    "pairs": 300,
+    "positives": 177,
+    "gbm_out_of_fold": {
+      "precision": 0.6853932584269663,
+      "recall": 0.6892655367231638,
+      "f1": 0.6873239436619718,
+      "tp": 122,
+      "fp": 56,
+      "fn": 55,
+      "accuracy": 0.63
+    },
+    "llm_v1": {
+      "precision": 0.782312925170068,
+      "recall": 0.6497175141242938,
+      "f1": 0.7098765432098765,
+      "tp": 115,
+      "fp": 32,
+      "fn": 62,
+      "accuracy": 0.6866666666666666
+    },
+    "llm_v2": {
+      "precision": 0.725,
+      "recall": 0.8192090395480226,
+      "f1": 0.7692307692307693,
+      "tp": 145,
+      "fp": 55,
+      "fn": 32,
+      "accuracy": 0.71
+    },
+    "llm_v2_averaged_with_gbm": {
+      "precision": 0.7230769230769231,
+      "recall": 0.7966101694915254,
+      "f1": 0.7580645161290323,
+      "tp": 141,
+      "fp": 54,
+      "fn": 36,
+      "accuracy": 0.7
+    }
+  },
+  "gbm_band_accuracy": {
+    "dev_pairs": 1652,
+    "dev_out_of_fold": 0.7863196125907991,
+    "test_pairs": 1142,
+    "test": 0.7381786339754816
+  },
+  "llm_runs": {
+    "dev-band-v2": {
+      "model": "mlx-community/Qwen3-14B-4bit",
+      "pairs": 1432,
+      "reason": false,
+      "thinking_budget": 0,
+      "mean_seconds_per_pair": 0.6781620959681475,
+      "p50_seconds": 0.7184824584983289,
+      "p95_seconds": 0.9483807146229083,
+      "pairs_per_second": 1.47443842077815,
+      "mean_prefill_tokens": 74.42388268156425,
+      "mean_generated_tokens": 0.0
+    },
+    "dev-prompt-v1": {
+      "model": "mlx-community/Qwen3-14B-4bit",
+      "pairs": 300,
+      "reason": false,
+      "thinking_budget": 0,
+      "mean_seconds_per_pair": 0.859552802227748,
+      "p50_seconds": 0.6926348125271033,
+      "p95_seconds": 2.251566247962183,
+      "pairs_per_second": 1.1632526083367283,
+      "mean_prefill_tokens": 73.06666666666666,
+      "mean_generated_tokens": 0.0
+    },
+    "dev-prompt-v2": {
+      "model": "mlx-community/Qwen3-14B-4bit",
+      "pairs": 300,
+      "reason": false,
+      "thinking_budget": 0,
+      "mean_seconds_per_pair": 0.6819818547024624,
+      "p50_seconds": 0.7031644375238102,
+      "p95_seconds": 0.9404017642635154,
+      "pairs_per_second": 1.465545050217076,
+      "mean_prefill_tokens": 73.06666666666666,
+      "mean_generated_tokens": 0.0
+    },
+    "qwen3-0.6b_band": {
+      "model": "mlx-community/Qwen3-0.6B-4bit",
+      "pairs": 1142,
+      "reason": false,
+      "thinking_budget": 0,
+      "mean_seconds_per_pair": 0.023222799182471113,
+      "p50_seconds": 0.023878874984802678,
+      "p95_seconds": 0.03033412706863601,
+      "pairs_per_second": 43.02901305620431,
+      "mean_prefill_tokens": 75.75831873905429,
+      "mean_generated_tokens": 0.0
+    },
+    "qwen3-1.7b_band": {
+      "model": "mlx-community/Qwen3-1.7B-4bit",
+      "pairs": 1142,
+      "reason": false,
+      "thinking_budget": 0,
+      "mean_seconds_per_pair": 0.054782076422863146,
+      "p50_seconds": 0.05724306250340305,
+      "p95_seconds": 0.07378501221828629,
+      "pairs_per_second": 18.245751904797988,
+      "mean_prefill_tokens": 75.75831873905429,
+      "mean_generated_tokens": 0.0
+    },
+    "qwen3-14b_all": {
+      "model": "mlx-community/Qwen3-14B-4bit",
+      "pairs": 1858,
+      "reason": false,
+      "thinking_budget": 0,
+      "mean_seconds_per_pair": 0.6078774069195106,
+      "p50_seconds": 0.639531562483171,
+      "p95_seconds": 0.872473562535015,
+      "pairs_per_second": 1.6448660987218298,
+      "mean_prefill_tokens": 69.42034445640473,
+      "mean_generated_tokens": 0.0
+    },
+    "qwen3-14b_band": {
+      "model": "mlx-community/Qwen3-14B-4bit",
+      "pairs": 1142,
+      "reason": false,
+      "thinking_budget": 0,
+      "mean_seconds_per_pair": 0.6321927684730008,
+      "p50_seconds": 0.645059770467924,
+      "p95_seconds": 0.869865597880562,
+      "pairs_per_second": 1.611219854663854,
+      "mean_prefill_tokens": 75.75831873905429,
+      "mean_generated_tokens": 0.0
+    },
+    "qwen3-14b_reasons": {
+      "model": "mlx-community/Qwen3-14B-4bit",
+      "pairs": 150,
+      "reason": true,
+      "thinking_budget": 0,
+      "mean_seconds_per_pair": 1.3345861413927438,
+      "p50_seconds": 1.264208062493708,
+      "p95_seconds": 1.8561572251608596,
+      "pairs_per_second": 0.7492536762203379,
+      "mean_prefill_tokens": 77.17333333333333,
+      "mean_generated_tokens": 12.466666666666667
+    },
+    "qwen3-14b_tail": {
+      "model": "mlx-community/Qwen3-14B-4bit",
+      "pairs": 800,
+      "reason": false,
+      "thinking_budget": 0,
+      "mean_seconds_per_pair": 0.6859555555305269,
+      "p50_seconds": 0.6675466664892156,
+      "p95_seconds": 0.9243214024318149,
+      "pairs_per_second": 1.457638049774894,
+      "mean_prefill_tokens": 79.5425,
+      "mean_generated_tokens": 0.0
+    },
+    "qwen3-14b_think256": {
+      "model": "mlx-community/Qwen3-14B-4bit",
+      "pairs": 100,
+      "reason": false,
+      "thinking_budget": 256,
+      "mean_seconds_per_pair": 12.118969473309699,
+      "p50_seconds": 9.690202103491174,
+      "p95_seconds": 19.401896502092132,
+      "pairs_per_second": 0.08251419363415073,
+      "mean_prefill_tokens": 69.71,
+      "mean_generated_tokens": 253.49
+    }
+  },
+  "model_sizes": {
+    "qwen3-0.6b_band": {
+      "band": {
+        "pairs": 1142,
+        "positives": 378,
+        "gbm": {
+          "precision": 0.5860566448801743,
+          "recall": 0.7116402116402116,
+          "f1": 0.6427718040621266,
+          "tp": 269,
+          "fp": 190,
+          "fn": 109,
+          "accuracy": 0.7381786339754816
+        },
+        "llm": {
+          "precision": 0.3309982486865149,
+          "recall": 1.0,
+          "f1": 0.4973684210526316,
+          "tp": 378,
+          "fp": 764,
+          "fn": 0,
+          "accuracy": 0.3309982486865149
+        }
+      },
+      "cost": {
+        "model": "mlx-community/Qwen3-0.6B-4bit",
+        "pairs": 1142,
+        "reason": false,
+        "thinking_budget": 0,
+        "mean_seconds_per_pair": 0.023222799182471113,
+        "p50_seconds": 0.023878874984802678,
+        "p95_seconds": 0.03033412706863601,
+        "pairs_per_second": 43.02901305620431,
+        "mean_prefill_tokens": 75.75831873905429,
+        "mean_generated_tokens": 0.0
+      }
+    },
+    "qwen3-1.7b_band": {
+      "band": {
+        "pairs": 1142,
+        "positives": 378,
+        "gbm": {
+          "precision": 0.5860566448801743,
+          "recall": 0.7116402116402116,
+          "f1": 0.6427718040621266,
+          "tp": 269,
+          "fp": 190,
+          "fn": 109,
+          "accuracy": 0.7381786339754816
+        },
+        "llm": {
+          "precision": 0.9545454545454546,
+          "recall": 0.05555555555555555,
+          "f1": 0.105,
+          "tp": 21,
+          "fp": 1,
+          "fn": 357,
+          "accuracy": 0.6865148861646234
+        }
+      },
+      "cost": {
+        "model": "mlx-community/Qwen3-1.7B-4bit",
+        "pairs": 1142,
+        "reason": false,
+        "thinking_budget": 0,
+        "mean_seconds_per_pair": 0.054782076422863146,
+        "p50_seconds": 0.05724306250340305,
+        "p95_seconds": 0.07378501221828629,
+        "pairs_per_second": 18.245751904797988,
+        "mean_prefill_tokens": 75.75831873905429,
+        "mean_generated_tokens": 0.0
+      }
+    },
+    "qwen3-14b_band": {
+      "band": {
+        "pairs": 1142,
+        "positives": 378,
+        "gbm": {
+          "precision": 0.5860566448801743,
+          "recall": 0.7116402116402116,
+          "f1": 0.6427718040621266,
+          "tp": 269,
+          "fp": 190,
+          "fn": 109,
+          "accuracy": 0.7381786339754816
+        },
+        "llm": {
+          "precision": 0.680089485458613,
+          "recall": 0.8042328042328042,
+          "f1": 0.7369696969696969,
+          "tp": 304,
+          "fp": 143,
+          "fn": 74,
+          "accuracy": 0.8099824868651488
+        }
+      },
+      "cost": {
+        "model": "mlx-community/Qwen3-14B-4bit",
+        "pairs": 1142,
+        "reason": false,
+        "thinking_budget": 0,
+        "mean_seconds_per_pair": 0.6321927684730008,
+        "p50_seconds": 0.645059770467924,
+        "p95_seconds": 0.869865597880562,
+        "pairs_per_second": 1.611219854663854,
+        "mean_prefill_tokens": 75.75831873905429,
+        "mean_generated_tokens": 0.0
+      }
+    }
+  },
+  "thinking": {
+    "qwen3-14b_think256": {
+      "thinking": {
+        "pairs": 100,
+        "positives": 36,
+        "gbm": {
+          "precision": 0.625,
+          "recall": 0.6944444444444444,
+          "f1": 0.6578947368421053,
+          "tp": 25,
+          "fp": 15,
+          "fn": 11,
+          "accuracy": 0.74
+        },
+        "llm": {
+          "precision": 0.9310344827586207,
+          "recall": 0.75,
+          "f1": 0.8307692307692308,
+          "tp": 27,
+          "fp": 2,
+          "fn": 9,
+          "accuracy": 0.89
+        }
+      },
+      "no_thinking_same_pairs": {
+        "pairs": 100,
+        "positives": 36,
+        "gbm": {
+          "precision": 0.625,
+          "recall": 0.6944444444444444,
+          "f1": 0.6578947368421053,
+          "tp": 25,
+          "fp": 15,
+          "fn": 11,
+          "accuracy": 0.74
+        },
+        "llm": {
+          "precision": 0.7837837837837838,
+          "recall": 0.8055555555555556,
+          "f1": 0.7945205479452055,
+          "tp": 29,
+          "fp": 8,
+          "fn": 7,
+          "accuracy": 0.85
+        }
+      },
+      "cost": {
+        "model": "mlx-community/Qwen3-14B-4bit",
+        "pairs": 100,
+        "reason": false,
+        "thinking_budget": 256,
+        "mean_seconds_per_pair": 12.118969473309699,
+        "p50_seconds": 9.690202103491174,
+        "p95_seconds": 19.401896502092132,
+        "pairs_per_second": 0.08251419363415073,
+        "mean_prefill_tokens": 69.71,
+        "mean_generated_tokens": 253.49
+      }
+    }
+  }
+}

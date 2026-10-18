@@ -1,0 +1,80 @@
+{
+  "model": "mlx-community/Qwen3-14B-4bit",
+  "split": "test",
+  "pairs": "all",
+  "sample": 3000,
+  "reason": false,
+  "thinking_budget": 0,
+  "prompt": "v2",
+  "total_pairs": 3000,
+  "runs": [
+    {
+      "pairs": 600,
+      "seconds": 363.6622675000108,
+      "load_seconds": 5.644651375012472,
+      "started_after": 1142,
+      "date": "2026-10-17",
+      "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+      "python": "3.12.13",
+      "libraries": {
+        "numpy": "2.5.4",
+        "scikit-learn": "1.9.1",
+        "rapidfuzz": "3.14.6",
+        "mlx": "0.32.4",
+        "mlx-lm": "0.32.2"
+      },
+      "commit": "9947fe4-dirty"
+    },
+    {
+      "pairs": 600,
+      "seconds": 346.9725091670407,
+      "load_seconds": 5.61512979096733,
+      "started_after": 1742,
+      "date": "2026-10-17",
+      "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+      "python": "3.12.13",
+      "libraries": {
+        "numpy": "2.5.4",
+        "scikit-learn": "1.9.1",
+        "rapidfuzz": "3.14.6",
+        "mlx": "0.32.4",
+        "mlx-lm": "0.32.2"
+      },
+      "commit": "9947fe4-dirty"
+    },
+    {
+      "pairs": 600,
+      "seconds": 382.9573594160029,
+      "load_seconds": 5.940848500002176,
+      "started_after": 2342,
+      "date": "2026-10-17",
+      "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+      "python": "3.12.13",
+      "libraries": {
+        "numpy": "2.5.4",
+        "scikit-learn": "1.9.1",
+        "rapidfuzz": "3.14.6",
+        "mlx": "0.32.4",
+        "mlx-lm": "0.32.2"
+      },
+      "commit": "4d4f169-dirty"
+    },
+    {
+      "pairs": 58,
+      "seconds": 35.98309283301933,
+      "load_seconds": 6.150516374967992,
+      "started_after": 2942,
+      "date": "2026-10-17",
+      "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+      "python": "3.12.13",
+      "libraries": {
+        "numpy": "2.5.4",
+        "scikit-learn": "1.9.1",
+        "rapidfuzz": "3.14.6",
+        "mlx": "0.32.4",
+        "mlx-lm": "0.32.2"
+      },
+      "commit": "4d4f169-dirty"
+    }
+  ]
+}

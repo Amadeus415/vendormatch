@@ -1,0 +1,501 @@
+{
+  "meta": {
+    "date": "2026-10-17",
+    "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+    "python": "3.12.13",
+    "libraries": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "rapidfuzz": "3.14.6",
+      "mlx": "0.32.4",
+      "mlx-lm": "0.32.2"
+    },
+    "commit": "0264eec"
+  },
+  "chosen_k": 10,
+  "dev": {
+    "records": 6147,
+    "true_pairs": 9663,
+    "normalize_seconds": 0.03292841702932492,
+    "rows": [
+      {
+        "method": "acronym",
+        "candidates": 174,
+        "recall": 0.007140639552933871,
+        "reduction_ratio": 0.9999907886459579,
+        "seconds": 0.003850957960821688
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 1,
+        "candidates": 5838,
+        "recall": 0.5299596398633964,
+        "reduction_ratio": 0.9996909431902444,
+        "seconds": 0.12763370794709772
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 1,
+        "candidates": 6010,
+        "recall": 0.536893304356825,
+        "reduction_ratio": 0.9996818377138351,
+        "seconds": 0.1314846659079194
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 2,
+        "candidates": 9186,
+        "recall": 0.7021628893718307,
+        "reduction_ratio": 0.9995137040331596,
+        "seconds": 0.11414216697448865
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 2,
+        "candidates": 9357,
+        "recall": 0.7089930663355065,
+        "reduction_ratio": 0.9995046514955666,
+        "seconds": 0.11799312493531033
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 3,
+        "candidates": 12821,
+        "recall": 0.8077201697195487,
+        "reduction_ratio": 0.999321271435787,
+        "seconds": 0.19480883301002905
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 3,
+        "candidates": 12991,
+        "recall": 0.814446859153472,
+        "reduction_ratio": 0.9993122718370103,
+        "seconds": 0.19865979097085074
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 5,
+        "candidates": 20857,
+        "recall": 0.8948566697712925,
+        "reduction_ratio": 0.9988958551077303,
+        "seconds": 0.19767662504455075
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 5,
+        "candidates": 21026,
+        "recall": 0.9014798716754631,
+        "reduction_ratio": 0.9988869084477698,
+        "seconds": 0.20152758300537243
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 10,
+        "candidates": 43486,
+        "recall": 0.9178309013763841,
+        "reduction_ratio": 0.9976979026329174,
+        "seconds": 0.2084324160241522
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 10,
+        "candidates": 43650,
+        "recall": 0.9239366656317913,
+        "reduction_ratio": 0.9976892206670386,
+        "seconds": 0.21228337398497388
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 20,
+        "candidates": 87883,
+        "recall": 0.9214529649177274,
+        "reduction_ratio": 0.9953475780041547,
+        "seconds": 0.22820958303054795
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 20,
+        "candidates": 88044,
+        "recall": 0.927455241643382,
+        "reduction_ratio": 0.9953390548547251,
+        "seconds": 0.23206054099136963
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 50,
+        "candidates": 215710,
+        "recall": 0.927455241643382,
+        "reduction_ratio": 0.9885805679286804,
+        "seconds": 0.28991574997780845
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 50,
+        "candidates": 215871,
+        "recall": 0.9334575183690366,
+        "reduction_ratio": 0.9885720447792506,
+        "seconds": 0.29376670793863013
+      },
+      {
+        "method": "token",
+        "max_df": 2,
+        "candidates": 578,
+        "recall": 0.05319259029286971,
+        "reduction_ratio": 0.9999694013641591,
+        "seconds": 0.002602499967906624
+      },
+      {
+        "method": "token",
+        "max_df": 5,
+        "candidates": 4799,
+        "recall": 0.4265755976404843,
+        "reduction_ratio": 0.999745946620415,
+        "seconds": 0.0035580830299295485
+      },
+      {
+        "method": "token",
+        "max_df": 10,
+        "candidates": 10098,
+        "recall": 0.7517334161233571,
+        "reduction_ratio": 0.9994654238326633,
+        "seconds": 0.004135791037697345
+      },
+      {
+        "method": "token",
+        "max_df": 25,
+        "candidates": 18193,
+        "recall": 0.8094794577253441,
+        "reduction_ratio": 0.9990368841144429,
+        "seconds": 0.004911791009362787
+      },
+      {
+        "method": "token",
+        "max_df": 50,
+        "candidates": 32390,
+        "recall": 0.8237607368312119,
+        "reduction_ratio": 0.9982853117389549,
+        "seconds": 0.005710459023248404
+      },
+      {
+        "method": "token",
+        "max_df": 100,
+        "candidates": 64083,
+        "recall": 0.8358687778122736,
+        "reduction_ratio": 0.9966075218328942,
+        "seconds": 0.007873583002947271
+      },
+      {
+        "method": "token",
+        "max_df": 250,
+        "candidates": 128871,
+        "recall": 0.8436303425437235,
+        "reduction_ratio": 0.9931777218002734,
+        "seconds": 0.026484915986657143
+      }
+    ]
+  },
+  "test": {
+    "records": 4543,
+    "true_pairs": 7112,
+    "normalize_seconds": 0.017858582956250757,
+    "rows": [
+      {
+        "method": "acronym",
+        "candidates": 53,
+        "recall": 0.004640044994375703,
+        "reduction_ratio": 0.9999948629239094,
+        "seconds": 0.0028144579846411943
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 1,
+        "candidates": 4278,
+        "recall": 0.5285433070866141,
+        "reduction_ratio": 0.999585350726116,
+        "seconds": 0.06594950001453981
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 1,
+        "candidates": 4330,
+        "recall": 0.5330427446569179,
+        "reduction_ratio": 0.9995803105759893,
+        "seconds": 0.068763957999181
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 2,
+        "candidates": 6724,
+        "recall": 0.702615298087739,
+        "reduction_ratio": 0.9993482698182338,
+        "seconds": 0.0652151660178788
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 2,
+        "candidates": 6776,
+        "recall": 0.7071147356580427,
+        "reduction_ratio": 0.9993432296681071,
+        "seconds": 0.06802962400252
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 3,
+        "candidates": 9393,
+        "recall": 0.8114454443194601,
+        "reduction_ratio": 0.9990895744203852,
+        "seconds": 0.11399487499147654
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 3,
+        "candidates": 9445,
+        "recall": 0.8159448818897638,
+        "reduction_ratio": 0.9990845342702585,
+        "seconds": 0.11680933297611773
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 5,
+        "candidates": 15360,
+        "recall": 0.9087457817772778,
+        "reduction_ratio": 0.9985112171933478,
+        "seconds": 0.11662758298916742
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 5,
+        "candidates": 15412,
+        "recall": 0.9132452193475815,
+        "reduction_ratio": 0.9985061770432211,
+        "seconds": 0.11944204097380862
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 10,
+        "candidates": 32037,
+        "recall": 0.9278683914510686,
+        "reduction_ratio": 0.9968947828921408,
+        "seconds": 0.12247800000477582
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 10,
+        "candidates": 32089,
+        "recall": 0.9323678290213723,
+        "reduction_ratio": 0.9968897427420143,
+        "seconds": 0.12529245798941702
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 20,
+        "candidates": 65236,
+        "recall": 0.9322272215973003,
+        "reduction_ratio": 0.9936769378141431,
+        "seconds": 0.13612879201536998
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 20,
+        "candidates": 65288,
+        "recall": 0.936726659167604,
+        "reduction_ratio": 0.9936718976640164,
+        "seconds": 0.13894325000001118
+      },
+      {
+        "method": "tfidf_knn",
+        "k": 50,
+        "candidates": 158887,
+        "recall": 0.9358830146231721,
+        "reduction_ratio": 0.9845997243619437,
+        "seconds": 0.1800022090319544
+      },
+      {
+        "method": "tfidf_knn+acronym",
+        "k": 50,
+        "candidates": 158939,
+        "recall": 0.9403824521934758,
+        "reduction_ratio": 0.984594684211817,
+        "seconds": 0.1828166670165956
+      },
+      {
+        "method": "token",
+        "max_df": 2,
+        "candidates": 435,
+        "recall": 0.05455568053993251,
+        "reduction_ratio": 0.999957837205671,
+        "seconds": 0.0019859999883919954
+      },
+      {
+        "method": "token",
+        "max_df": 5,
+        "candidates": 3700,
+        "recall": 0.45388076490438695,
+        "reduction_ratio": 0.9996413739332934,
+        "seconds": 0.0027453749789856374
+      },
+      {
+        "method": "token",
+        "max_df": 10,
+        "candidates": 7791,
+        "recall": 0.7723565804274466,
+        "reduction_ratio": 0.9992448498146728,
+        "seconds": 0.003204291977453977
+      },
+      {
+        "method": "token",
+        "max_df": 25,
+        "candidates": 14151,
+        "recall": 0.8177727784026997,
+        "reduction_ratio": 0.9986284006837933,
+        "seconds": 0.003798082994762808
+      },
+      {
+        "method": "token",
+        "max_df": 50,
+        "candidates": 28294,
+        "recall": 0.8330989876265467,
+        "reduction_ratio": 0.9972575767752984,
+        "seconds": 0.004689582972787321
+      },
+      {
+        "method": "token",
+        "max_df": 100,
+        "candidates": 48184,
+        "recall": 0.843503937007874,
+        "reduction_ratio": 0.9953297193518406,
+        "seconds": 0.0059998329961672425
+      },
+      {
+        "method": "token",
+        "max_df": 250,
+        "candidates": 80301,
+        "recall": 0.8501124859392576,
+        "reduction_ratio": 0.9922167481668634,
+        "seconds": 0.008619333966635168
+      }
+    ]
+  },
+  "test_missed": {
+    "missed": 481,
+    "by_noise": {
+      "former_name": 364,
+      "suffix": 321,
+      "punctuation": 254,
+      "typo": 199,
+      "card_descriptor": 163,
+      "abbreviation": 101,
+      "charge_city": 85,
+      "remit_address": 82,
+      "processor_prefix": 70,
+      "alias": 69,
+      "truncated": 57,
+      "store_number": 37,
+      "attention_line": 31,
+      "acronym": 7
+    },
+    "examples": [
+      [
+        "Range Impact Inc",
+        "MALACHITE INNOVATIONZS INC Attn Billing"
+      ],
+      [
+        "SOLIGENIX Inc",
+        "DOFR BIOPHARAM, Inc."
+      ],
+      [
+        "SOLIGENIX Inc",
+        "DOR BIOPHARMA Inc."
+      ],
+      [
+        "GoPro INC",
+        "WOODMAN LABS, INC."
+      ],
+      [
+        "Liberty Latin America Ltd.",
+        "LatAm Splitco Ltd"
+      ],
+      [
+        "INTERNATIONAL LUXURY PRODUCTS INC",
+        "ECOMINAS CORP"
+      ],
+      [
+        "INTERNATIONAL LUXURY PRODUCTS INC",
+        "ECOMINAS LLC"
+      ],
+      [
+        "INTERNATIONAL LUXURY PRODUCTS INC",
+        "ECOMINAS CORP"
+      ],
+      [
+        "SAVE THE WORLD AIR Inc.",
+        "QS EJGY INC."
+      ],
+      [
+        "SAVE THE WORLD AIR Inc.",
+        "QS Energy, Inc."
+      ],
+      [
+        "GRI Bio & Co",
+        "Vallon Parma Inc"
+      ],
+      [
+        "New Residential Investment Corp.",
+        "RITHM ACL CORP"
+      ],
+      [
+        "New Residential Investment Corp.",
+        "Rithm Capital Corp."
+      ],
+      [
+        "New Residential Investment Corp.",
+        "RITHM CAPITAL"
+      ],
+      [
+        "New Residential Investment Corp.",
+        "Rithm Cap"
+      ],
+      [
+        "New Residential Investment Corp.",
+        "SP * RITHM CAPITAL LLC"
+      ],
+      [
+        "RANGE IMPACT, INC.",
+        "MALACHITE INNOVATIONZS INC Attn Billing"
+      ],
+      [
+        "VITA COCO CO",
+        "All Market Inc"
+      ],
+      [
+        "8X8 INC",
+        "8s8"
+      ],
+      [
+        "8X8 INC",
+        "8Z8"
+      ],
+      [
+        "Kidoz Incorporated",
+        "Shoal Games Limited"
+      ],
+      [
+        "Kidoz Incorporated",
+        "SHOAL GAMES"
+      ],
+      [
+        "GoPo Inc C/O Lockbox Services",
+        "WOODMAN LABS, INC."
+      ],
+      [
+        "SQ *PARK HOTELS & RESO",
+        "Hilton Worldwide, Inc."
+      ],
+      [
+        "SQ *GRAYSCALE BITCOIN",
+        "Bitcoin Cash Investment Trust"
+      ]
+    ]
+  }
+}

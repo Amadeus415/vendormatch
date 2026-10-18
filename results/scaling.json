@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "date": "2026-10-17",
+    "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+    "python": "3.12.13",
+    "libraries": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "rapidfuzz": "3.14.6",
+      "mlx": "0.32.4",
+      "mlx-lm": "0.32.2"
+    },
+    "commit": "6bceb98-dirty",
+    "k": 10,
+    "repeats": 3
+  },
+  "rows": [
+    {
+      "records": 1000,
+      "companies": 68,
+      "candidates": 6233,
+      "band_pairs": 269,
+      "seconds": {
+        "normalize": 0.0778503330075182,
+        "block": 0.08982466696761549,
+        "features": 0.3228780830395408,
+        "score": 1.105828959029168,
+        "cluster": 0.017069124965928495
+      },
+      "total_seconds": 1.6134511670097709,
+      "records_per_second": 619.7894429326376,
+      "pair_f1": 0.9218446224434248,
+      "cluster": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.9255626081938835,
+        "pairwise_f1": 0.9613425232244531,
+        "bcubed_precision": 1.0,
+        "bcubed_recall": 0.9321336469000555,
+        "bcubed_f1": 0.9648749178356112,
+        "exact_cluster_rate": 0.6617647058823529,
+        "ari": 0.9608198047979322,
+        "n_pred_clusters": 92,
+        "n_true_clusters": 68
+      },
+      "all_total_seconds": [
+        0.42861704190727323,
+        1.6134511670097709,
+        6.899543499981519
+      ]
+    },
+    {
+      "records": 2000,
+      "companies": 136,
+      "candidates": 12525,
+      "band_pairs": 579,
+      "seconds": {
+        "normalize": 0.05148075002944097,
+        "block": 0.06346029200358316,
+        "features": 0.1690725829685107,
+        "score": 0.15647945803357288,
+        "cluster": 0.04259824997279793
+      },
+      "total_seconds": 0.48309133300790563,
+      "records_per_second": 4140.003894392514,
+      "pair_f1": 0.9109404840784191,
+      "cluster": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.8897000930498891,
+        "pairwise_f1": 0.941630998825802,
+        "bcubed_precision": 1.0,
+        "bcubed_recall": 0.9014494017377531,
+        "bcubed_f1": 0.9481708016147152,
+        "exact_cluster_rate": 0.6397058823529411,
+        "ari": 0.9412443245606124,
+        "n_pred_clusters": 194,
+        "n_true_clusters": 136
+      },
+      "all_total_seconds": [
+        0.44987870909972116,
+        0.48309133300790563,
+        0.9785946260089986
+      ]
+    },
+    {
+      "records": 5000,
+      "companies": 334,
+      "candidates": 31719,
+      "band_pairs": 1433,
+      "seconds": {
+        "normalize": 0.14201833395054564,
+        "block": 0.25721483398228884,
+        "features": 0.38725670799613,
+        "score": 0.08796308300225064,
+        "cluster": 0.17971916601527482
+      },
+      "total_seconds": 1.05417212494649,
+      "records_per_second": 4743.058445274107,
+      "pair_f1": 0.9024955932832358,
+      "cluster": {
+        "pairwise_precision": 0.9993969019807009,
+        "pairwise_recall": 0.8880270765759414,
+        "pairwise_f1": 0.9404262309771652,
+        "bcubed_precision": 0.9991266666666666,
+        "bcubed_recall": 0.8980808615618987,
+        "bcubed_f1": 0.9459129001530786,
+        "exact_cluster_rate": 0.5868263473053892,
+        "ari": 0.9402667690214728,
+        "n_pred_clusters": 484,
+        "n_true_clusters": 334
+      },
+      "all_total_seconds": [
+        0.9267249169643037,
+        1.05417212494649,
+        1.526422582915984
+      ]
+    },
+    {
+      "records": 10000,
+      "companies": 667,
+      "candidates": 63673,
+      "band_pairs": 3036,
+      "seconds": {
+        "normalize": 0.37759408401325345,
+        "block": 1.0068523340160027,
+        "features": 0.8829372909967788,
+        "score": 0.08742633397923782,
+        "cluster": 0.29960899997968227
+      },
+      "total_seconds": 2.654419042984955,
+      "records_per_second": 3767.30268961406,
+      "pair_f1": 0.8981038070849998,
+      "cluster": {
+        "pairwise_precision": 0.9984410408061587,
+        "pairwise_recall": 0.8747025611421653,
+        "pairwise_f1": 0.9324847647924109,
+        "bcubed_precision": 0.9981452380952381,
+        "bcubed_recall": 0.8859812358101135,
+        "bcubed_f1": 0.9387246172838644,
+        "exact_cluster_rate": 0.553223388305847,
+        "ari": 0.932395069400449,
+        "n_pred_clusters": 999,
+        "n_true_clusters": 667
+      },
+      "all_total_seconds": [
+        1.9476597079774365,
+        2.654419042984955,
+        2.6964334580115974
+      ]
+    },
+    {
+      "records": 20000,
+      "companies": 1333,
+      "candidates": 127995,
+      "band_pairs": 6343,
+      "seconds": {
+        "normalize": 0.6294327089563012,
+        "block": 2.8148242920287885,
+        "features": 2.1077982500428334,
+        "score": 0.7967228750349022,
+        "cluster": 0.6344397499924526
+      },
+      "total_seconds": 6.983217876055278,
+      "records_per_second": 2864.0091652557344,
+      "pair_f1": 0.8931404392379728,
+      "cluster": {
+        "pairwise_precision": 0.9955678402488456,
+        "pairwise_recall": 0.869231472816948,
+        "pairwise_f1": 0.928120140334007,
+        "bcubed_precision": 0.9958068943474826,
+        "bcubed_recall": 0.8805028315226225,
+        "bcubed_f1": 0.934611997191564,
+        "exact_cluster_rate": 0.5431357839459865,
+        "ari": 0.9280724859556801,
+        "n_pred_clusters": 2011,
+        "n_true_clusters": 1333
+      },
+      "all_total_seconds": [
+        5.23243137600366,
+        6.983217876055278,
+        10.277081124018878
+      ]
+    },
+    {
+      "records": 50000,
+      "companies": 3330,
+      "candidates": 324295,
+      "band_pairs": 19639,
+      "seconds": {
+        "normalize": 1.4333186669973657,
+        "block": 14.861761457985267,
+        "features": 5.815914500039071,
+        "score": 6.629984250001144,
+        "cluster": 2.5845901249558665
+      },
+      "total_seconds": 31.325568999978714,
+      "records_per_second": 1596.1402009979124,
+      "pair_f1": 0.8828894179500534,
+      "cluster": {
+        "pairwise_precision": 0.9924847758939992,
+        "pairwise_recall": 0.857196669421534,
+        "pairwise_f1": 0.9198931486310987,
+        "bcubed_precision": 0.9925052589308524,
+        "bcubed_recall": 0.868726424791239,
+        "bcubed_f1": 0.9264999652845405,
+        "exact_cluster_rate": 0.49309309309309307,
+        "ari": 0.9198720126791263,
+        "n_pred_clusters": 5207,
+        "n_true_clusters": 3330
+      },
+      "all_total_seconds": [
+        29.443277375015896,
+        31.325568999978714,
+        34.46677620802075
+      ]
+    }
+  ]
+}
