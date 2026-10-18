@@ -1,0 +1,46 @@
+{
+  "kind": "gbm",
+  "threshold": 0.5369947759511713,
+  "band": [
+    0.05459092946253149,
+    0.9588397126736756
+  ],
+  "features": [
+    "tfidf_cos",
+    "ratio",
+    "partial_ratio",
+    "token_sort",
+    "token_set",
+    "jaro_winkler",
+    "exact",
+    "prefix",
+    "acronym",
+    "first_token",
+    "idf_jaccard",
+    "rare_unshared",
+    "number_mismatch",
+    "len_ratio",
+    "state_eq",
+    "city_sim",
+    "zip_eq",
+    "street_sim",
+    "any_card",
+    "same_source"
+  ],
+  "meta": {
+    "trained_on": "data/dev.csv",
+    "k": 10,
+    "dev_pairs": 43650,
+    "date": "2026-10-17",
+    "hardware": "Apple M4 Pro, 48 GB, macOS 26.6.2",
+    "python": "3.12.13",
+    "libraries": {
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "rapidfuzz": "3.14.6",
+      "mlx": "0.32.4",
+      "mlx-lm": "0.32.2"
+    },
+    "commit": "uncommitted"
+  }
+}
