@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" width="900" height="250" role="img" aria-labelledby="t d">
+<title id="t">Where 10 million pairs go</title>
+<desc id="d">Five stages. Normalize cleans 4,543 records. Blocking keeps 32,089 candidate pairs out of 10.3 million possible, holding 93 percent of true pairs. The model decides 96.4 percent of candidates on its own. The 1,142 pairs it is unsure of go to a local LLM. Clustering turns the scores into 1,500 companies, 86 percent of them exactly right.</desc>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#18202B}
+.bg{fill:#FFFFFF}.h{font-size:17px;font-weight:650}.s{font-size:12.5px}.m{fill:#5B6B7D}
+.stage{font-size:13.5px;font-weight:650}.n{font-size:24px;font-weight:650;font-variant-numeric:tabular-nums}
+.c{font-size:11px;fill:#5B6B7D}
+.box{fill:#F6F8FA;stroke:#D5DDE3}.hot{fill:#E6F4F6;stroke:#087F90;stroke-width:1.5}.hotn{fill:#087F90}
+.arrow{fill:none;stroke:#9AA8B6;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-color-scheme:dark){
+text{fill:#E8ECF0}.bg{fill:#0D1117}.m,.c{fill:#9AA8B6}
+.box{fill:#161B22;stroke:#30363D}.hot{fill:#0F2A2E;stroke:#2FB4C4}.hotn{fill:#2FB4C4}.arrow{stroke:#6E7B8B}}
+</style>
+<rect class="bg" width="900" height="250" rx="12"/>
+<text x="24" y="36" class="h">Where 10 million pairs go</text>
+<text x="24" y="58" class="s m">Test split: 4,543 records of 1,500 real companies. Each stage only sees what the one before it let through.</text>
+
+<!-- 1 normalize -->
+<rect class="box" x="24" y="84" width="150" height="130" rx="8"/>
+<text x="40" y="108" class="stage">1 · Normalize</text>
+<text x="40" y="146" class="n">4,543</text>
+<text x="40" y="168" class="c">records cleaned</text>
+<text x="40" y="184" class="c">Inc / Corp, SQ *, store #,</text>
+<text x="40" y="200" class="c">Attn: lines, dba names</text>
+
+<path class="arrow" d="M178 149H194M189 144L195 149L189 154"/>
+
+<!-- 2 block -->
+<rect class="box" x="200" y="84" width="150" height="130" rx="8"/>
+<text x="216" y="108" class="stage">2 · Block</text>
+<text x="216" y="146" class="n">32,089</text>
+<text x="216" y="168" class="c">candidate pairs</text>
+<text x="216" y="184" class="c">0.31% of 10.3M possible</text>
+<text x="216" y="200" class="c">keeps 93% of true pairs</text>
+
+<path class="arrow" d="M354 149H370M365 144L371 149L365 154"/>
+
+<!-- 3 score -->
+<rect class="box" x="376" y="84" width="150" height="130" rx="8"/>
+<text x="392" y="108" class="stage">3 · Score</text>
+<text x="392" y="146" class="n">96.4%</text>
+<text x="392" y="168" class="c">decided here</text>
+<text x="392" y="184" class="c">20 cheap features,</text>
+<text x="392" y="200" class="c">gradient-boosted trees</text>
+
+<path class="arrow" d="M530 149H546M541 144L547 149L541 154"/>
+
+<!-- 4 judge -->
+<rect class="hot" x="552" y="84" width="150" height="130" rx="8"/>
+<text x="568" y="108" class="stage">4 · Judge</text>
+<text x="568" y="146" class="n hotn">1,142</text>
+<text x="568" y="168" class="c">uncertain pairs, 3.6%</text>
+<text x="568" y="184" class="c">judged by local Qwen3-14B</text>
+<text x="568" y="200" class="c">about 12 min on a laptop</text>
+
+<path class="arrow" d="M706 149H722M717 144L723 149L717 154"/>
+
+<!-- 5 cluster -->
+<rect class="box" x="728" y="84" width="150" height="130" rx="8"/>
+<text x="744" y="108" class="stage">5 · Cluster</text>
+<text x="744" y="146" class="n">1,500</text>
+<text x="744" y="168" class="c">companies out</text>
+<text x="744" y="184" class="c">average linkage</text>
+<text x="744" y="200" class="c">86% exactly right</text>
+
+<text x="24" y="236" class="c">Without the judge the whole run takes about 3 s. 50,000 records take 31 s.</text>
+</svg>

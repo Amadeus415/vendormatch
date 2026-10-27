@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 350" width="900" height="350" role="img" aria-labelledby="t d">
+<title id="t">Five records, four systems, one company</title>
+<desc id="d">Five records of Blue Bottle Coffee from an ERP, accounts payable, a card feed and a CRM, each spelled differently, are joined into one golden record. A look-alike, Blue Apron, stays separate.</desc>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;fill:#18202B}
+.bg{fill:#FFFFFF}.h{font-size:17px;font-weight:650}.s{font-size:12.5px}.m{fill:#5B6B7D}
+.name{font-size:13.5px;font-weight:600}.d{font-size:11px;fill:#5B6B7D}
+.tag{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:9.5px;font-weight:600;fill:#5B6B7D;letter-spacing:.04em}
+.card{fill:#F6F8FA;stroke:#D5DDE3}.gold{fill:#E6F4F6;stroke:#087F90;stroke-width:1.5}.apart{fill:#FFFFFF;stroke:#C2410C;stroke-width:1.2;stroke-dasharray:4 3}
+.link{fill:none;stroke:#087F90;stroke-width:1.6;opacity:.75}.linkno{fill:none;stroke:#C2410C;stroke-width:1.4;stroke-dasharray:4 3;opacity:.8}
+.big{font-size:16px;font-weight:650;fill:#087F90}.no{font-size:13.5px;font-weight:600;fill:#C2410C}
+@media (prefers-color-scheme:dark){
+text{fill:#E8ECF0}.bg{fill:#0D1117}.m,.d,.tag{fill:#9AA8B6}
+.card{fill:#161B22;stroke:#30363D}.gold{fill:#0F2A2E;stroke:#2FB4C4}.apart{fill:#0D1117;stroke:#F08A5B}
+.link{stroke:#2FB4C4}.linkno{stroke:#F08A5B}.big{fill:#2FB4C4}.no{fill:#F08A5B}}
+</style>
+<rect class="bg" width="900" height="350" rx="12"/>
+<text x="24" y="36" class="h">Five records, four systems, one company</text>
+<text x="24" y="58" class="s m">The same supplier as it shows up across a finance stack. vendormatch puts them in one record and keeps the look-alike out.</text>
+
+<!-- source records -->
+<rect class="card" x="24" y="84" width="330" height="36" rx="6"/>
+<text x="36" y="106" class="tag">ERP</text>
+<text x="84" y="100" class="name">Blue Bottle Coffee, Inc.</text>
+<text x="84" y="113" class="d">300 Webster St, Oakland, CA 94607</text>
+
+<rect class="card" x="24" y="126" width="330" height="36" rx="6"/>
+<text x="36" y="148" class="tag">AP</text>
+<text x="84" y="142" class="name">BLUE BOTTLE COFFEE INC</text>
+<text x="84" y="155" class="d">Attn: Accounts Receivable · PO Box 2890</text>
+
+<rect class="card" x="24" y="168" width="330" height="36" rx="6"/>
+<text x="36" y="190" class="tag">CARD</text>
+<text x="84" y="184" class="name">SQ *BLUE BOTTLE COF</text>
+<text x="84" y="197" class="d">SAN FRANCISCO CA · 22 chars, city of the charge</text>
+
+<rect class="card" x="24" y="210" width="330" height="36" rx="6"/>
+<text x="36" y="232" class="tag">CRM</text>
+<text x="84" y="226" class="name">Blue Bottle</text>
+<text x="84" y="239" class="d">the name people actually use</text>
+
+<rect class="card" x="24" y="252" width="330" height="36" rx="6"/>
+<text x="36" y="274" class="tag">AP</text>
+<text x="84" y="268" class="name">Blue Bottle Coffe Co.</text>
+<text x="84" y="281" class="d">typo, suffix swapped, former name</text>
+
+<rect class="apart" x="24" y="300" width="330" height="36" rx="6"/>
+<text x="36" y="322" class="tag">ERP</text>
+<text x="84" y="316" class="name">Blue Apron, LLC</text>
+<text x="84" y="329" class="d">New York, NY · looks close, isn't</text>
+
+<!-- connectors -->
+<path class="link" d="M354 102 C 460 102, 470 170, 560 170"/>
+<path class="link" d="M354 144 C 460 144, 470 170, 560 170"/>
+<path class="link" d="M354 186 C 460 186, 470 170, 560 170"/>
+<path class="link" d="M354 228 C 460 228, 470 170, 560 170"/>
+<path class="link" d="M354 270 C 460 270, 470 170, 560 170"/>
+<path class="linkno" d="M354 318 C 460 318, 470 300, 560 300"/>
+
+<!-- golden record -->
+<rect class="gold" x="560" y="122" width="316" height="96" rx="8"/>
+<text x="580" y="146" class="tag">GOLDEN RECORD · CLUSTER 0</text>
+<text x="580" y="174" class="big">Blue Bottle Coffee, Inc.</text>
+<text x="580" y="194" class="d">Oakland, CA · 5 records · named from the ERP</text>
+
+<!-- the one that stays out -->
+<rect class="apart" x="560" y="284" width="316" height="32" rx="8"/>
+<text x="580" y="304" class="no">Blue Apron, LLC</text>
+<text x="700" y="304" class="d">cluster 1 · 1 record</text>
+</svg>
